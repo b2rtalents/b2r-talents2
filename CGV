@@ -1,1 +1,380 @@
 
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mentions légales · CGV · RGPD — B2R Talents</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:      #0e0e10;
+      --bg2:     #141416;
+      --card:    #1e1e23;
+      --border:  rgba(255,255,255,0.07);
+      --border2: rgba(255,255,255,0.12);
+      --text:    #e8e4dd;
+      --muted:   #7a7672;
+      --muted2:  #a09c96;
+      --gold:    #c9964a;
+      --gold-light: #deb97a;
+      --teal:    #4ecdc4;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: sticky; top: 0; z-index: 100;
+      height: 62px;
+      background: rgba(14,14,16,0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px;
+    }
+    .logo-link { text-decoration: none; display: flex; align-items: center; }
+    .logo-link img { height: 38px; width: auto; }
+    .back-btn {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.8rem; color: var(--muted2);
+      text-decoration: none;
+      padding: 7px 18px;
+      border: 1px solid var(--border2);
+      border-radius: 40px;
+      transition: all 0.2s;
+    }
+    .back-btn:hover { color: var(--text); border-color: var(--gold); }
+
+    /* ── LAYOUT ── */
+    .page-wrap {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 64px 40px 100px;
+    }
+
+    /* ── TABS NAV ── */
+    .tabs {
+      display: flex; gap: 6px; margin-bottom: 48px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0;
+    }
+    .tab-btn {
+      padding: 10px 22px;
+      border: none; background: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem; font-weight: 500;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--muted);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: all 0.2s;
+    }
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+    /* ── SECTIONS ── */
+    .section { display: none; animation: fadeIn 0.3s ease; }
+    .section.active { display: block; }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+
+    /* ── TYPOGRAPHY ── */
+    .page-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.8rem; font-weight: 300;
+      color: var(--text); line-height: 1.1;
+      margin-bottom: 10px;
+    }
+    .page-title em { font-style: italic; color: var(--gold); }
+
+    .page-subtitle {
+      font-size: 0.82rem; color: var(--muted);
+      font-style: italic; margin-bottom: 40px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.55rem; font-weight: 600;
+      color: var(--teal);
+      margin: 36px 0 14px;
+    }
+
+    h3 {
+      font-size: 0.88rem; font-weight: 600;
+      color: var(--gold-light);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin: 24px 0 10px;
+    }
+
+    p {
+      font-size: 0.9rem;
+      line-height: 1.8;
+      color: var(--muted2);
+      margin-bottom: 12px;
+    }
+    p strong { color: var(--text); font-weight: 500; }
+
+    ul {
+      list-style: none;
+      margin: 10px 0 16px 0;
+      padding: 0;
+    }
+    ul li {
+      font-size: 0.88rem; color: var(--muted2);
+      line-height: 1.7; padding: 4px 0;
+      display: flex; gap: 10px; align-items: flex-start;
+    }
+    ul li::before { content: '–'; color: var(--muted); flex-shrink: 0; }
+
+    .info-block {
+      background: var(--card);
+      border: 1px solid var(--border2);
+      border-radius: 14px;
+      padding: 22px 26px;
+      margin: 20px 0;
+    }
+    .info-block p { margin-bottom: 6px; }
+    .info-block p:last-child { margin-bottom: 0; }
+
+    .tarif-table {
+      width: 100%; border-collapse: collapse;
+      margin: 16px 0 24px;
+    }
+    .tarif-table td {
+      padding: 12px 16px;
+      font-size: 0.87rem; color: var(--muted2);
+      border-bottom: 1px solid var(--border);
+    }
+    .tarif-table tr:last-child td { border-bottom: none; }
+    .tarif-table td:last-child {
+      text-align: right;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem; color: var(--text);
+    }
+    .tarif-table tr:first-child td {
+      color: var(--muted); font-size: 0.72rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding-bottom: 8px;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .alert {
+      background: rgba(201,150,74,0.08);
+      border: 1px solid rgba(201,150,74,0.2);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin: 24px 0;
+      font-size: 0.82rem;
+      color: var(--gold-light);
+      font-style: italic;
+      line-height: 1.65;
+    }
+
+    .rule {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 40px 0;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      padding: 18px 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 0.75rem; color: var(--muted);
+    }
+    footer a { color: var(--gold-light); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="logo-link" href="index.html">
+    <img src="LOGO_B2R_TALENTS.jpg" alt="B2R Talents">
+  </a>
+  <a class="back-btn" href="index.html">← Retour au site</a>
+</header>
+
+<div class="page-wrap">
+
+  <h1 class="page-title">Informations <em>légales</em></h1>
+  <p class="page-subtitle">Mentions légales · Conditions Générales de Vente · Politique RGPD — Dernière mise à jour : mars 2026</p>
+
+  <nav class="tabs">
+    <button class="tab-btn active" onclick="showSection('mentions')">Mentions légales</button>
+    <button class="tab-btn" onclick="showSection('cgv')">CGV</button>
+    <button class="tab-btn" onclick="showSection('rgpd')">RGPD</button>
+  </nav>
+
+  <!-- ════ MENTIONS LÉGALES ════ -->
+  <div class="section active" id="section-mentions">
+
+    <h2>Éditeur du site</h2>
+    <div class="info-block">
+      <p><strong>Raison sociale :</strong> B2R TALENTS</p>
+      <p><strong>Nom :</strong> RODRIGUEZ Benoît-Raphaël, Franck, Christophe</p>
+      <p><strong>Forme juridique :</strong> Entrepreneur individuel</p>
+      <p><strong>SIREN :</strong> 993 879 881</p>
+      <p><strong>SIRET (établissement principal) :</strong> 99387988100015</p>
+      <p><strong>Code APE :</strong> 7022Z — Conseil pour les affaires et autres conseils de gestion</p>
+      <p><strong>Activité :</strong> Libérale non réglementée — conseil en recrutement, accompagnement de profils professionnels atypiques et orientation professionnelle</p>
+      <p><strong>Adresse :</strong> 57 la grande corbière, 44521 Couffé, France</p>
+      <p><strong>Email :</strong> <a href="mailto:contact@b2r-talents.fr" style="color:var(--gold-light);">contact@b2r-talents.fr</a></p>
+      <p><strong>Site :</strong> https://b2r-talents.fr</p>
+      <p><em style="color:var(--muted); font-size:0.82rem;">Non assujetti à TVA — franchise en base de TVA (art. 293 B du CGI)</em></p>
+    </div>
+
+    <h2>Hébergement</h2>
+    <p>Le site b2r-talents.fr est hébergé via GitHub Pages (GitHub, Inc. — 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, États-Unis). Le nom de domaine est géré par Carrd.</p>
+
+    <h2>Propriété intellectuelle</h2>
+    <p>L'ensemble des contenus du site b2r-talents.fr (textes, visuels, logo, structure) sont la propriété exclusive de B2R Talents, sauf mention contraire. Toute reproduction, même partielle, est interdite sans autorisation écrite préalable.</p>
+
+    <h2>Responsabilité</h2>
+    <p>B2R Talents s'efforce de maintenir les informations publiées à jour et exactes. La responsabilité de l'éditeur ne saurait être engagée pour tout contenu de sites tiers accessibles par liens hypertextes.</p>
+
+  </div>
+
+  <!-- ════ CGV ════ -->
+  <div class="section" id="section-cgv">
+
+    <h2>Objet et champ d'application</h2>
+    <p>Les présentes Conditions Générales de Vente régissent l'ensemble des prestations de coaching emploi, d'accompagnement au retour à l'emploi et de conseil en orientation professionnelle proposées par <strong>B2R Talents</strong> à toute personne physique ou morale (ci-après « le Client »).</p>
+    <p>Toute commande implique l'acceptation pleine et entière des présentes CGV.</p>
+
+    <h2>Prestations & tarifs</h2>
+    <p>Les prestations sont réalisées exclusivement <strong>à distance</strong> (téléphone ou visioconférence), sur tout le territoire français. Les tarifs sont indiqués en euros TTC. B2R Talents bénéficiant de la franchise en base de TVA (art. 293 B du CGI), aucune TVA n'est applicable.</p>
+
+    <table class="tarif-table">
+      <tr><td>Formule</td><td>Durée</td><td>Tarif</td></tr>
+      <tr><td>Révélation</td><td>1 séance · 2h</td><td>180 €</td></tr>
+      <tr><td>Trajectoire</td><td>5 séances · 6 à 8 semaines</td><td>750 €</td></tr>
+      <tr><td>Décollage</td><td>3 à 6 mois · suivi complet</td><td>1 800 €</td></tr>
+      <tr><td>Prestations entreprises</td><td>Sur mesure</td><td>Sur devis</td></tr>
+    </table>
+
+    <h2>Commande et conclusion du contrat</h2>
+    <p>La commande est formalisée par échange email, signature d'un devis, ou confirmation écrite du Client. Le contrat est réputé conclu à la date de réception du règlement ou de la confirmation écrite.</p>
+    <p>Un <strong>entretien découverte gratuit et sans engagement</strong> est proposé préalablement à toute commande.</p>
+
+    <h2>Modalités de paiement</h2>
+    <p>Le règlement s'effectue par <strong>virement bancaire</strong> ou via <strong>PayPal</strong> à l'adresse indiquée sur la facture. Un paiement en plusieurs fois peut être convenu entre les parties par accord écrit préalable pour les formules Trajectoire et Décollage.</p>
+
+    <h2>Droit de rétractation</h2>
+    <p>Conformément à l'article L.221-18 du Code de la consommation, le Client particulier (B2C) dispose d'un délai de <strong>14 jours calendaires</strong> à compter de la confirmation de commande pour exercer son droit de rétractation, sans avoir à justifier de motifs.</p>
+    <p>La rétractation s'exerce par email à <a href="mailto:contact@b2r-talents.fr" style="color:var(--gold-light);">contact@b2r-talents.fr</a>. Si la prestation a débuté à la demande expresse du Client avant l'expiration du délai, un prorata des séances déjà effectuées sera dû.</p>
+    <p>Le droit de rétractation ne s'applique pas aux prestations B2B.</p>
+
+    <h2>Annulation et report</h2>
+    <p>Toute annulation ou demande de report d'une séance doit être notifiée par email au moins <strong>48 heures à l'avance</strong>. En deçà de ce délai, la séance sera considérée comme réalisée et facturée.</p>
+
+    <h2>Obligations & responsabilité</h2>
+    <p>Les prestations constituent une <strong>obligation de moyens</strong> et non de résultat. Le succès de la recherche d'emploi dépend de nombreux facteurs extérieurs au Prestataire. Le Client s'engage à participer activement aux séances et à effectuer les travaux demandés entre celles-ci.</p>
+
+    <h2>Confidentialité</h2>
+    <p>Le Prestataire s'engage à traiter avec la plus stricte confidentialité toutes les informations partagées par le Client dans le cadre de l'accompagnement.</p>
+
+    <h2>Médiation</h2>
+    <p>En cas de litige non résolu à l'amiable, le Client particulier peut recourir gratuitement à un médiateur de la consommation. Coordonnées disponibles sur demande à <a href="mailto:contact@b2r-talents.fr" style="color:var(--gold-light);">contact@b2r-talents.fr</a>.</p>
+
+    <h2>Droit applicable</h2>
+    <p>Les présentes CGV sont soumises au droit français. En cas de litige non résolu, les tribunaux compétents seront ceux du ressort du domicile du Prestataire.</p>
+
+    <div class="alert">⚠️ Document établi en mars 2026. À faire valider par un professionnel du droit avant toute mise en ligne définitive.</div>
+
+  </div>
+
+  <!-- ════ RGPD ════ -->
+  <div class="section" id="section-rgpd">
+
+    <h2>Responsable du traitement</h2>
+    <div class="info-block">
+      <p><strong>RODRIGUEZ Benoît-Raphaël — B2R Talents</strong></p>
+      <p>57 la grande corbière, 44521 Couffé</p>
+      <p><a href="mailto:contact@b2r-talents.fr" style="color:var(--gold-light);">contact@b2r-talents.fr</a></p>
+    </div>
+
+    <h2>Données collectées</h2>
+    <ul>
+      <li>Données d'identification : nom, prénom, email, téléphone</li>
+      <li>Données professionnelles : CV, parcours, situation, projet professionnel</li>
+      <li>Données sensibles (avec consentement explicite) : informations relatives à un diagnostic (HPI, TDAH, etc.) communiquées volontairement</li>
+      <li>Données de navigation : statistiques anonymes via les outils du site</li>
+    </ul>
+
+    <h2>Finalités du traitement</h2>
+    <ul>
+      <li>Réalisation des prestations d'accompagnement</li>
+      <li>Gestion de la relation commerciale et émission des factures</li>
+      <li>Communication avec le Client (email, téléphone, visio)</li>
+      <li>Prise de rendez-vous via Calendly</li>
+      <li>Amélioration des services</li>
+    </ul>
+
+    <h2>Base légale</h2>
+    <p>Les traitements reposent sur : l'exécution du contrat (art. 6.1.b RGPD), le consentement (art. 6.1.a — pour les données sensibles), et l'intérêt légitime du Prestataire (art. 6.1.f — pour la gestion commerciale).</p>
+
+    <h2>Durée de conservation</h2>
+    <ul>
+      <li>Données de facturation : 10 ans (obligation légale comptable)</li>
+      <li>Données d'accompagnement : 3 ans après la fin de la prestation</li>
+      <li>Données de contact (prospects) : 3 ans après le dernier contact</li>
+    </ul>
+
+    <h2>Destinataires & sous-traitants</h2>
+    <p>Les données ne sont transmises à aucun tiers à des fins commerciales. Elles peuvent être communiquées aux seuls sous-traitants techniques nécessaires — hébergeur (GitHub Pages), outil de visioconférence, <strong>Calendly</strong>, <strong>PayPal</strong> — qui s'engagent à les traiter conformément au RGPD.</p>
+    <p>Certains de ces outils (Calendly, PayPal) peuvent traiter des données hors de l'Union européenne, encadrés par des clauses contractuelles types approuvées par la Commission européenne.</p>
+
+    <h2>Vos droits</h2>
+    <p>Conformément au RGPD, vous disposez des droits suivants :</p>
+    <ul>
+      <li>Droit d'accès à vos données</li>
+      <li>Droit de rectification</li>
+      <li>Droit à l'effacement (« droit à l'oubli »)</li>
+      <li>Droit à la limitation du traitement</li>
+      <li>Droit à la portabilité des données</li>
+      <li>Droit d'opposition</li>
+      <li>Droit de retirer votre consentement à tout moment</li>
+    </ul>
+    <p>Pour exercer ces droits : <a href="mailto:contact@b2r-talents.fr" style="color:var(--gold-light);">contact@b2r-talents.fr</a></p>
+    <p>En cas de réponse insatisfaisante, vous pouvez introduire une réclamation auprès de la <strong>CNIL</strong> : <a href="https://www.cnil.fr" target="_blank" style="color:var(--gold-light);">www.cnil.fr</a></p>
+
+    <h2>Cookies</h2>
+    <p>Le site b2r-talents.fr peut utiliser des cookies strictement nécessaires à son fonctionnement. Aucun cookie publicitaire ou de tracking tiers n'est déposé sans votre consentement préalable.</p>
+
+    <h2>Sécurité</h2>
+    <p>B2R Talents met en œuvre les mesures techniques et organisationnelles appropriées pour protéger vos données contre tout accès non autorisé, perte ou divulgation.</p>
+
+  </div>
+
+</div>
+
+<footer>
+  <span>© 2025 B2R Talents — <a href="mailto:contact@b2r-talents.fr">contact@b2r-talents.fr</a></span>
+  <a href="index.html">← Retour au site</a>
+</footer>
+
+<script>
+  function showSection(name) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('section-' + name).classList.add('active');
+    event.target.classList.add('active');
+  }
+</script>
+
+</body>
+</html>
+
