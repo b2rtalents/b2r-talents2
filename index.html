@@ -4,7 +4,52 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>B2R Talents — Coaching &amp; Neurodiversité</title>
+<title>Coach emploi HPI TDAH | Accompagnement neurodivergents | B2R Talents</title>
+<meta name="description" content="Coach emploi spécialisé HPI et TDAH. Accompagnement neurodivergents pour retrouver un emploi aligné avec qui vous êtes vraiment. 100% distanciel, France entière. Dès 180€. Formation entreprise à la neurodiversité.">
+<meta name="keywords" content="coach emploi HPI, coach emploi TDAH, accompagnement neurodivergents emploi, coaching profil atypique, recherche emploi HPI TDAH, coach neurodivergent France, formation neurodiversité entreprise, sensibilisation neurodiversité RH, accompagnement professionnel zèbre, emploi haut potentiel">
+<meta name="author" content="Benoît-Raphaël Rodriguez — B2R Talents">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://b2r-talents.fr/">
+
+<!-- Open Graph (partage réseaux sociaux) -->
+<meta property="og:title" content="B2R Talents — Coach emploi HPI, TDAH & Neurodivergents">
+<meta property="og:description" content="Vous êtes HPI, TDAH ou neurodivergent ? Coach emploi spécialisé, je vous aide à retrouver un emploi aligné avec votre façon d'être. Dès 180€, 100% distanciel.">
+<meta property="og:url" content="https://b2r-talents.fr/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="B2R Talents">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B2R Talents — Coach emploi HPI, TDAH & Neurodivergents">
+<meta name="twitter:description" content="Coach emploi spécialisé HPI, TDAH et neurodivergents. Dès 180€, 100% distanciel, France entière.">
+
+<!-- Schema.org JSON-LD -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "B2R Talents",
+  "description": "Coaching emploi et accompagnement au retour à l'emploi pour profils HPI, TDAH et neurodivergents. Formation entreprise à la neurodiversité.",
+  "url": "https://b2r-talents.fr",
+  "email": "contact@b2r-talents.fr",
+  "telephone": "+33699777263",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "57 la grande corbière",
+    "addressLocality": "Couffé",
+    "postalCode": "44521",
+    "addressCountry": "FR"
+  },
+  "areaServed": "France",
+  "serviceType": ["Coach emploi HPI", "Coach emploi TDAH", "Accompagnement neurodivergents", "Formation neurodiversité entreprise", "Sensibilisation neurodiversité RH", "Coaching profil atypique"],
+  "founder": {
+    "@type": "Person",
+    "name": "Benoît-Raphaël Rodriguez"
+  },
+  "priceRange": "180€ - 1800€"
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -185,6 +230,36 @@ h1.htitle em.gold{color:var(--gold-light)}
 footer{background:var(--bg2);border-top:1px solid var(--border);padding:18px 48px;display:flex;align-items:center;justify-content:space-between;font-size:0.75rem;color:var(--muted)}
 footer a{color:var(--gold-light);text-decoration:none}
 footer span{display:flex;gap:20px}
+
+
+/* COOKIE BANNER */
+#cookie-banner{
+  position:fixed;bottom:0;left:0;right:0;z-index:9999;
+  background:rgba(20,20,22,0.97);backdrop-filter:blur(12px);
+  border-top:1px solid rgba(255,255,255,0.1);
+  padding:18px 40px;
+  display:flex;align-items:center;justify-content:space-between;gap:24px;
+  flex-wrap:wrap;
+  transform:translateY(100%);
+  transition:transform 0.4s ease;
+}
+#cookie-banner.visible{transform:translateY(0)}
+#cookie-banner p{font-size:0.8rem;color:var(--muted2);line-height:1.6;flex:1;max-width:700px}
+#cookie-banner a{color:var(--gold-light);text-decoration:none}
+.cookie-btns{display:flex;gap:10px;flex-shrink:0}
+.btn-cookie-accept{
+  padding:9px 22px;background:var(--teal);color:#0e0e10;
+  border:none;border-radius:40px;font-family:'DM Sans',sans-serif;
+  font-size:0.8rem;font-weight:600;cursor:pointer;transition:background 0.2s
+}
+.btn-cookie-accept:hover{background:#62d9d0}
+.btn-cookie-refuse{
+  padding:9px 22px;background:transparent;color:var(--muted2);
+  border:1px solid var(--border2);border-radius:40px;
+  font-family:'DM Sans',sans-serif;font-size:0.8rem;cursor:pointer;
+  transition:all 0.2s
+}
+.btn-cookie-refuse:hover{color:var(--text);border-color:var(--text)}
 
 /* RESPONSIVE */
 @media(max-width:960px){
@@ -387,6 +462,20 @@ footer span{display:flex;gap:20px}
 </footer>
 
 <script>
+
+// Cookie banner
+function setCookie(val) {
+  localStorage.setItem('cookie_consent', val);
+  document.getElementById('cookie-banner').classList.remove('visible');
+}
+window.addEventListener('load', function() {
+  var consent = localStorage.getItem('cookie_consent');
+  if (!consent) {
+    setTimeout(function() {
+      document.getElementById('cookie-banner').classList.add('visible');
+    }, 800);
+  }
+});
 function show(name) {
   document.getElementById("panel-b2c").style.display   = "none";
   document.getElementById("panel-b2b").style.display   = "none";
@@ -403,5 +492,14 @@ function rdv() {
   window.open("https://calendly.com/b2r-talents/prise-de-contact", "_blank");
 }
 </script>
+
+<!-- BANDEAU COOKIE -->
+<div id="cookie-banner">
+  <p>🍪 Ce site utilise uniquement des cookies strictement nécessaires à son fonctionnement (Calendly, GitHub Pages). Aucun cookie publicitaire. <a href="mentions-legales-cgv.html">En savoir plus</a></p>
+  <div class="cookie-btns">
+    <button class="btn-cookie-refuse" onclick="setCookie('refused')">Refuser</button>
+    <button class="btn-cookie-accept" onclick="setCookie('accepted')">Accepter</button>
+  </div>
+</div>
 </body>
 </html>
