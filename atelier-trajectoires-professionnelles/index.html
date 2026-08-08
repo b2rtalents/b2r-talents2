@@ -1624,6 +1624,60 @@ p{
   color:#FFFFFF;
 }
 
+
+/* ===== TÉMOIGNAGES VALIDÉS ===== */
+.testimonials{padding:58px 0;background:#10383D;color:#FFF8F0}
+.testimonials .wrap{width:min(1380px,calc(100% - 72px))}
+.testimonials-head{display:grid;grid-template-columns:1fr auto;gap:36px;align-items:end;margin-bottom:28px}
+.testimonials .eyebrow{color:#FFD08A!important}
+.testimonials h2{color:#FFFFFF!important;margin:4px 0 0;font-size:clamp(2.5rem,3.8vw,4.1rem)}
+.testimonials-source{display:flex;flex-direction:column;align-items:flex-end;gap:4px;color:#E9DED4;font-size:17px;line-height:1.3}
+.stars{color:#FFD08A;letter-spacing:.12em;font-size:20px}
+.testimonials-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:22px;align-items:stretch}
+.testimonial-card{position:relative;background:#FFF9F3;color:#253234;border:1px solid #D9CABC;border-radius:24px;padding:34px 36px 28px;box-shadow:0 16px 38px rgba(0,0,0,.14);overflow:hidden}
+.testimonial-card .quote-mark{position:absolute;right:24px;top:4px;font-family:Georgia,"Times New Roman",serif;font-size:7rem;line-height:1;color:#E9D6C6;pointer-events:none}
+.testimonial-card blockquote{position:relative;z-index:1;margin:0;color:#293638!important;font-family:Georgia,"Times New Roman",serif;font-size:20px;line-height:1.62;font-style:normal}
+.testimonial-card footer{position:relative;z-index:1;display:flex;align-items:baseline;gap:9px;margin-top:22px;padding-top:17px;border-top:1px solid #D9CABC;color:#5A5049}
+.testimonial-card footer strong{color:#12343A!important;font-size:20px}
+.testimonial-card footer span{color:#665C54!important;font-size:16px}
+@media(max-width:900px){
+  .testimonials .wrap{width:min(100% - 44px,1100px)}
+  .testimonials-head{grid-template-columns:1fr}
+  .testimonials-source{align-items:flex-start}
+  .testimonials-grid{grid-template-columns:1fr}
+  .testimonial-card blockquote{font-size:19px}
+}
+@media(max-width:700px){
+  .testimonials{padding:46px 0}
+  .testimonials .wrap{width:min(100% - 28px,680px)}
+  .testimonial-card{padding:28px 24px 24px}
+  .testimonial-card blockquote{font-size:18px}
+}
+
+/* ===== CORRECTION COLLISION FOOTER TÉMOIGNAGES ===== */
+.testimonial-card .testimonial-meta{
+  position:relative;
+  z-index:1;
+  display:flex;
+  align-items:baseline;
+  gap:9px;
+  margin-top:22px;
+  padding:17px 0 0 0 !important;
+  border-top:1px solid #D9CABC;
+  background:transparent !important;
+  color:#5A5049 !important;
+  font-size:16px;
+  line-height:1.4;
+}
+.testimonial-card .testimonial-meta strong{
+  color:#12343A !important;
+  font-size:20px;
+  font-weight:800;
+}
+.testimonial-card .testimonial-meta span{
+  color:#665C54 !important;
+  font-size:16px;
+}
 </style>
 </head>
 <body>
@@ -1647,7 +1701,6 @@ p{
 </div>
 <div class="cta-note">Premier échange de 30 min · gratuit · sans engagement</div>
 </div>
-
 <nav aria-label="Navigation rapide" class="quick-nav">
 <a href="#approche">L’approche</a><a href="#accompagnements">Les accompagnements</a><a href="#rencontre">Première rencontre</a>
 </nav></header>
@@ -1712,7 +1765,6 @@ p{
 </aside>
 </div>
 </section>
-
 <section class="offers-section" id="accompagnements">
 <div class="wrap">
 <div class="section-head-row">
@@ -1745,7 +1797,6 @@ p{
 </div>
 </div>
 </section>
-
 <section class="benefits">
 <div class="wrap">
 <div class="eyebrow">Ce que vous venez chercher</div>
@@ -1757,7 +1808,32 @@ p{
 <div class="commitment-line"><strong>Mon engagement :</strong> mobiliser toute mon expérience, mon regard de recruteur, ma capacité d’écoute et d’analyse pour lire, comprendre, interpréter et accompagner votre trajectoire avec exigence, humanité et sincérité.</div>
 </div>
 </section>
-<section class="trust">
+<section aria-labelledby="temoignages-title" class="testimonials" id="temoignages">
+<div class="wrap">
+<div class="testimonials-head">
+<div>
+<div class="eyebrow">Ils ont expérimenté mon accompagnement</div>
+<h2 id="temoignages-title">Ce qu’ils en retiennent.</h2>
+</div>
+<div class="testimonials-source">
+<span aria-label="5 étoiles sur 5" class="stars">★★★★★</span>
+<span>Avis publiés sur LinkedIn</span>
+</div>
+</div>
+<div class="testimonials-grid">
+<article class="testimonial-card">
+<div aria-hidden="true" class="quote-mark">“</div>
+<blockquote>J’ai eu l’occasion de solliciter Benoît-Raphaël à plusieurs reprises dans le cadre d’ateliers autour du recrutement. À chaque intervention, il a su s’adapter aux profils de chacun avec écoute, bienveillance et pertinence. Grâce à son expertise et à sa vision du recrutement, ses retours permettent de prendre du recul, d’affiner un projet professionnel ou d’envisager de nouvelles perspectives. Un professionnel engagé que je recommande avec grand plaisir.</blockquote>
+<div class="testimonial-meta"><strong>Floriane</strong><span>— Avis LinkedIn</span></div>
+</article>
+<article class="testimonial-card">
+<div aria-hidden="true" class="quote-mark">“</div>
+<blockquote>Je tiens tout particulièrement à remercier Benoît-Raphaël pour ses qualités avant tout d’écoute et humaines. Il sait mettre en exergue le meilleur de chaque candidat. Il connaît très bien son secteur. J’ai la chance de bénéficier de son coaching. Je le recommande vivement.</blockquote>
+<div class="testimonial-meta"><strong>Xavier</strong><span>— Avis LinkedIn</span></div>
+</article>
+</div>
+</div>
+</section><section class="trust">
 <div class="wrap">
 <details class="trust-details">
 <summary>Une relation de confiance et un accompagnement indépendant</summary>
