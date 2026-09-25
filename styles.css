@@ -1,0 +1,103 @@
+:root{
+  --page-width:1448px;
+  --marine:#07315B;
+  --blue:#1858AA;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:#fff;font-family:Arial,Helvetica,sans-serif}
+body{overflow-x:auto}
+.site-shell{width:var(--page-width);min-width:var(--page-width);margin:0 auto;background:#fff}
+.slice{position:relative;width:1448px;margin:0;padding:0;overflow:hidden}
+.slice>img{display:block;width:1448px;height:auto;margin:0;padding:0;border:0}
+.slice-header{height:64px}
+.slice-hero{height:309px}
+.slice-body{height:497px}
+.slice-cta{height:112px}
+.slice-footer{height:104px}
+.hotspot{position:absolute;display:block;background:transparent!important;border:0!important;box-shadow:none!important;color:transparent!important;text-decoration:none!important;font-size:0;line-height:0;z-index:5;cursor:pointer;outline-offset:2px}
+.hotspot:focus-visible{outline:2px solid var(--blue);outline-offset:-2px}
+.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+
+.hs-logo{left:49px;top:6px;width:252px;height:53px}
+.hs-home{left:347px;top:17px;width:61px;height:31px}
+.hs-rx{left:421px;top:13px;width:180px;height:38px}
+.hs-neuro{left:622px;top:14px;width:119px;height:37px}
+.hs-atelier{left:749px;top:14px;width:88px;height:37px}
+.hs-reflexions{left:846px;top:14px;width:77px;height:37px}
+.hs-about{left:933px;top:14px;width:70px;height:37px}
+.hs-contact{left:1007px;top:14px;width:64px;height:37px}
+.hs-rdv-header{left:1134px;top:9px;width:218px;height:45px}
+
+.hs-hero-cta{left:61px;top:246px;width:285px;height:46px}
+
+.hs-service-recrutement{left:178px;top:205px;width:117px;height:31px}
+.hs-service-chasse{left:626px;top:205px;width:117px;height:31px}
+.hs-service-executive{left:1078px;top:205px;width:117px;height:31px}
+
+.hs-cta-contact{left:768px;top:24px;width:231px;height:47px}
+.hs-cta-rdv{left:1013px;top:24px;width:203px;height:47px}
+
+.hs-f-home{left:344px;top:27px;width:52px;height:27px}
+.hs-f-rx{left:413px;top:27px;width:174px;height:27px}
+.hs-f-neuro{left:607px;top:27px;width:111px;height:27px}
+.hs-f-atelier{left:739px;top:27px;width:86px;height:27px}
+.hs-f-reflexions{left:846px;top:27px;width:68px;height:27px}
+.hs-f-about{left:935px;top:27px;width:58px;height:27px}
+.hs-f-contact{left:1014px;top:27px;width:55px;height:27px}
+.hs-linkedin{left:1182px;top:31px;width:60px;height:60px;z-index:50;pointer-events:auto}
+
+@media(max-width:1447px){.site-shell{margin-left:0;margin-right:0}}
+
+/* FOOTER HITBOXES — V correction complète */
+.slice-footer .hotspot{z-index:100!important;pointer-events:auto!important;cursor:pointer!important}
+.hs-f-home{left:325px!important;top:0!important;width:90px!important;height:104px!important}
+.hs-f-rx{left:415px!important;top:0!important;width:205px!important;height:104px!important}
+.hs-f-neuro{left:620px!important;top:0!important;width:135px!important;height:104px!important}
+.hs-f-atelier{left:755px!important;top:0!important;width:110px!important;height:104px!important}
+.hs-f-reflexions{left:865px!important;top:0!important;width:100px!important;height:104px!important}
+.hs-f-about{left:965px!important;top:0!important;width:80px!important;height:104px!important}
+.hs-f-contact{left:1045px!important;top:0!important;width:85px!important;height:104px!important}
+.hs-linkedin{left:1172px!important;top:0!important;width:80px!important;height:104px!important;z-index:110!important;pointer-events:auto!important}
+
+
+/* ACCUEIL V2.6 — footer interactif verrouillé */
+.slice-footer > img{
+  position:relative;
+  z-index:1;
+  pointer-events:none !important;
+  user-select:none;
+}
+.footer-nav-layer{
+  position:absolute;
+  inset:0;
+  z-index:500;
+  pointer-events:none;
+}
+.footer-nav-layer .hotspot{
+  position:absolute;
+  z-index:501 !important;
+  pointer-events:auto !important;
+  cursor:pointer !important;
+}
+/* Zones confortables centrées sur CHAQUE libellé réel */
+.footer-nav-layer .hs-f-home{left:340px!important;top:31px!important;width:67px!important;height:47px!important}
+.footer-nav-layer .hs-f-rx{left:417px!important;top:31px!important;width:195px!important;height:47px!important}
+.footer-nav-layer .hs-f-neuro{left:621px!important;top:31px!important;width:128px!important;height:47px!important}
+.footer-nav-layer .hs-f-atelier{left:755px!important;top:31px!important;width:103px!important;height:47px!important}
+.footer-nav-layer .hs-f-reflexions{left:864px!important;top:31px!important;width:94px!important;height:47px!important}
+.footer-nav-layer .hs-f-about{left:964px!important;top:31px!important;width:77px!important;height:47px!important}
+.footer-nav-layer .hs-f-contact{left:1045px!important;top:31px!important;width:83px!important;height:47px!important}
+.footer-nav-layer .hs-linkedin{left:1180px!important;top:27px!important;width:66px!important;height:66px!important}
+
+
+/* MASTER V2 — couche interactive sécurisée, sans impact visuel */
+.slice > img{pointer-events:none!important;user-select:none!important;-webkit-user-drag:none!important}
+.hotspot{z-index:1000!important;pointer-events:auto!important;cursor:pointer!important}
+.nav-layer,.footer-nav-layer,.filters-layer,.cards-layer{z-index:999!important;pointer-events:none!important}
+.nav-layer .hotspot,.footer-nav-layer .hotspot,.filters-layer .hotspot,.cards-layer .hotspot{pointer-events:auto!important}
+
+/* V10 — liens légaux discrets dans le footer */
+.legal-footer-links{position:absolute;left:54px;bottom:9px;display:flex;align-items:center;gap:7px;z-index:1200;font-family:Arial,Helvetica,sans-serif;font-size:10.5px;line-height:1;color:rgba(255,255,255,.88)}
+.legal-footer-links a{color:rgba(255,255,255,.92);text-decoration:none;border-bottom:1px solid rgba(255,255,255,.35);padding-bottom:1px}
+.legal-footer-links a:hover,.legal-footer-links a:focus-visible{color:#fff;border-bottom-color:#fff}
+.legal-footer-links span{color:rgba(255,255,255,.55)}

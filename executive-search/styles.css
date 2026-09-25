@@ -1,0 +1,45 @@
+:root{--page-width:1448px;--marine:#07315B;--blue:#1858AA}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:#fff;font-family:Arial,Helvetica,sans-serif}
+body{overflow-x:auto}
+.site-shell{width:var(--page-width);min-width:var(--page-width);margin:0 auto;background:#fff}
+.slice{position:relative;width:1448px;margin:0;padding:0;overflow:hidden}
+.slice>img{display:block;width:1448px;height:auto;margin:0;padding:0;border:0}
+.slice-header{height:65px}.slice-hero{height:319px}.slice-body{height:491px}.slice-cta{height:134px}.slice-footer{height:77px}
+.hotspot{position:absolute;display:block;background:transparent!important;border:0!important;box-shadow:none!important;color:transparent!important;text-decoration:none!important;font-size:0;line-height:0;z-index:5;cursor:pointer;outline-offset:2px}
+.hotspot:focus-visible{outline:2px solid var(--blue);outline-offset:-2px}
+.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+/* Header */
+.hs-logo{left:48px;top:5px;width:252px;height:55px}.hs-home{left:347px;top:16px;width:62px;height:31px}.hs-rx{left:420px;top:12px;width:181px;height:39px}.hs-neuro{left:622px;top:13px;width:120px;height:38px}.hs-atelier{left:748px;top:13px;width:90px;height:38px}.hs-reflexions{left:845px;top:13px;width:79px;height:38px}.hs-about{left:931px;top:13px;width:72px;height:38px}.hs-contact{left:1005px;top:13px;width:67px;height:38px}.hs-rdv-header{left:1135px;top:8px;width:218px;height:47px}
+/* Hero Executive Search */
+.hs-hero-cta{left:50px;top:220px;width:342px;height:58px}
+/* Corps */
+.hs-service-recrutement{left:176px;top:200px;width:120px;height:31px}.hs-service-chasse{left:625px;top:200px;width:120px;height:31px}.hs-service-executive{left:1078px;top:200px;width:120px;height:31px}
+/* CTA */
+.hs-cta-contact{left:768px;top:24px;width:231px;height:48px}.hs-cta-rdv{left:1013px;top:24px;width:204px;height:48px}
+/* Footer — couche interactive complète */
+.slice-footer>img{position:relative;z-index:1;pointer-events:none!important;user-select:none}
+.footer-nav-layer{position:absolute;inset:0;z-index:500;pointer-events:none}
+.footer-nav-layer .hotspot{position:absolute;z-index:501!important;pointer-events:auto!important;cursor:pointer!important}
+.footer-nav-layer .hs-f-home{left:325px;top:0;width:90px;height:77px}
+.footer-nav-layer .hs-f-rx{left:415px;top:0;width:205px;height:77px}
+.footer-nav-layer .hs-f-neuro{left:620px;top:0;width:135px;height:77px}
+.footer-nav-layer .hs-f-atelier{left:755px;top:0;width:110px;height:77px}
+.footer-nav-layer .hs-f-reflexions{left:865px;top:0;width:100px;height:77px}
+.footer-nav-layer .hs-f-about{left:965px;top:0;width:80px;height:77px}
+.footer-nav-layer .hs-f-contact{left:1045px;top:0;width:85px;height:77px}
+.footer-nav-layer .hs-linkedin{left:1172px;top:0;width:80px;height:77px;z-index:510!important}
+@media(max-width:1447px){.site-shell{margin-left:0;margin-right:0}}
+
+
+/* MASTER V2 — couche interactive sécurisée, sans impact visuel */
+.slice > img{pointer-events:none!important;user-select:none!important;-webkit-user-drag:none!important}
+.hotspot{z-index:1000!important;pointer-events:auto!important;cursor:pointer!important}
+.nav-layer,.footer-nav-layer,.filters-layer,.cards-layer{z-index:999!important;pointer-events:none!important}
+.nav-layer .hotspot,.footer-nav-layer .hotspot,.filters-layer .hotspot,.cards-layer .hotspot{pointer-events:auto!important}
+
+/* V10 — liens légaux discrets dans le footer */
+.legal-footer-links{position:absolute;left:54px;bottom:9px;display:flex;align-items:center;gap:7px;z-index:1200;font-family:Arial,Helvetica,sans-serif;font-size:10.5px;line-height:1;color:rgba(255,255,255,.88)}
+.legal-footer-links a{color:rgba(255,255,255,.92);text-decoration:none;border-bottom:1px solid rgba(255,255,255,.35);padding-bottom:1px}
+.legal-footer-links a:hover,.legal-footer-links a:focus-visible{color:#fff;border-bottom-color:#fff}
+.legal-footer-links span{color:rgba(255,255,255,.55)}

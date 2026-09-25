@@ -1,0 +1,65 @@
+:root{--page-width:1448px;--marine:#07315B;--blue:#1858AA}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:#fff;font-family:Arial,Helvetica,sans-serif}
+body{overflow-x:auto}
+.site-shell{width:var(--page-width);min-width:var(--page-width);margin:0 auto;background:#fff}
+.slice{position:relative;width:1448px;margin:0;padding:0;overflow:hidden}
+.slice>img{display:block;width:1448px;height:auto;margin:0;padding:0;border:0;pointer-events:none!important;user-select:none}
+.slice-header{height:67px}.slice-hero{height:265px}.slice-body{height:612px}.slice-cta{height:78px}.slice-footer{height:64px}
+.hotspot{position:absolute;display:block;background:transparent!important;border:0!important;box-shadow:none!important;color:transparent!important;text-decoration:none!important;font-size:0;line-height:0;z-index:501;cursor:pointer;outline-offset:2px;pointer-events:auto!important}
+.hotspot:focus-visible{outline:2px solid var(--blue);outline-offset:-2px}
+.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+.anchor-target{position:absolute;width:1px;height:1px;overflow:hidden;pointer-events:none}
+.nav-layer,.footer-nav-layer,.filters-layer,.cards-layer{position:absolute;inset:0;z-index:500;pointer-events:none}
+.nav-layer .hotspot,.footer-nav-layer .hotspot,.filters-layer .hotspot,.cards-layer .hotspot{pointer-events:auto!important}
+/* Header — zones larges et prioritaires */
+.hs-logo{left:48px;top:2px;width:252px;height:62px}
+.hs-home{left:338px;top:8px;width:79px;height:52px}
+.hs-rx{left:417px;top:6px;width:194px;height:54px}
+.hs-neuro{left:611px;top:6px;width:135px;height:54px}
+.hs-atelier{left:746px;top:6px;width:102px;height:54px}
+.hs-reflexions{left:848px;top:6px;width:86px;height:54px}
+.hs-about{left:934px;top:6px;width:70px;height:54px}
+.hs-contact{left:1004px;top:6px;width:78px;height:54px}
+.hs-rdv-header{left:1134px;top:4px;width:224px;height:57px}
+/* Filtres — toute la surface visible de chaque bouton */
+.hs-filter-all{left:58px;top:0;width:133px;height:49px}
+.hs-filter-b2r{left:194px;top:0;width:159px;height:49px}
+.hs-filter-read{left:357px;top:0;width:133px;height:49px}
+.hs-filter-video{left:494px;top:0;width:130px;height:49px}
+.hs-filter-recruit{left:628px;top:0;width:148px;height:49px}
+.hs-filter-neuro{left:780px;top:0;width:158px;height:49px}
+.hs-filter-management{left:942px;top:0;width:158px;height:49px}
+.hs-filter-defense{left:1104px;top:0;width:249px;height:49px}
+/* Cartes — toute la carte est cliquable */
+.hs-card-featured{left:58px;top:52px;width:638px;height:507px}
+.hs-card-linkedin{left:710px;top:52px;width:310px;height:248px}
+.hs-card-fourmiliere{left:1030px;top:52px;width:323px;height:248px}
+.hs-card-video{left:710px;top:311px;width:310px;height:248px}
+.hs-card-penurie{left:1030px;top:311px;width:323px;height:248px}
+/* CTA bas */
+.hs-cta-contact{left:778px;top:9px;width:222px;height:58px}
+.hs-cta-rdv{left:1005px;top:9px;width:220px;height:58px}
+/* Footer — toute la hauteur du footer sur chaque libellé */
+.footer-nav-layer .hs-f-home{left:330px;top:0;width:88px;height:64px}
+.footer-nav-layer .hs-f-rx{left:418px;top:0;width:202px;height:64px}
+.footer-nav-layer .hs-f-neuro{left:620px;top:0;width:134px;height:64px}
+.footer-nav-layer .hs-f-atelier{left:754px;top:0;width:106px;height:64px}
+.footer-nav-layer .hs-f-reflexions{left:860px;top:0;width:91px;height:64px}
+.footer-nav-layer .hs-f-about{left:951px;top:0;width:82px;height:64px}
+.footer-nav-layer .hs-f-contact{left:1033px;top:0;width:87px;height:64px}
+.footer-nav-layer .hs-linkedin{left:1165px;top:0;width:82px;height:64px;z-index:510!important}
+@media(max-width:1447px){.site-shell{margin-left:0;margin-right:0}}
+
+
+/* MASTER V2 — couche interactive sécurisée, sans impact visuel */
+.slice > img{pointer-events:none!important;user-select:none!important;-webkit-user-drag:none!important}
+.hotspot{z-index:1000!important;pointer-events:auto!important;cursor:pointer!important}
+.nav-layer,.footer-nav-layer,.filters-layer,.cards-layer{z-index:999!important;pointer-events:none!important}
+.nav-layer .hotspot,.footer-nav-layer .hotspot,.filters-layer .hotspot,.cards-layer .hotspot{pointer-events:auto!important}
+
+/* V10 — liens légaux discrets dans le footer */
+.legal-footer-links{position:absolute;left:54px;bottom:9px;display:flex;align-items:center;gap:7px;z-index:1200;font-family:Arial,Helvetica,sans-serif;font-size:10.5px;line-height:1;color:rgba(255,255,255,.88)}
+.legal-footer-links a{color:rgba(255,255,255,.92);text-decoration:none;border-bottom:1px solid rgba(255,255,255,.35);padding-bottom:1px}
+.legal-footer-links a:hover,.legal-footer-links a:focus-visible{color:#fff;border-bottom-color:#fff}
+.legal-footer-links span{color:rgba(255,255,255,.55)}
