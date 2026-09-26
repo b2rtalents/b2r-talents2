@@ -8,6 +8,8 @@
       "'": '&#039;'
     }[c]));
 
+  const normalize = s => String(s || '').replace(/\s+/g, ' ').trim();
+
   const fmt = s => {
     if (!s) return '';
     const d = new Date(s + 'T12:00:00');
@@ -23,15 +25,56 @@
   const desc = (a, b) =>
     String(b.date || '').localeCompare(String(a.date || ''));
 
-  const normalize = s =>
-    String(s || '').replace(/\s+/g, ' ').trim();
-
   const excerpt = (s, max = 300) => {
     const text = normalize(s);
     if (text.length <= max) return text;
     const cut = text.slice(0, max);
     const lastSpace = cut.lastIndexOf(' ');
     return (lastSpace > 180 ? cut.slice(0, lastSpace) : cut).trim() + '…';
+  };
+
+  /*
+   * Correspondance CMS -> affichage public.
+   * Référence demandée :
+   * - Recrutement -> Recrutement
+   * - Parcours professionnels -> RH & Parcours pro
+   * - Neurodiversité -> Neurodiversité
+   * - Gestion -> Management
+   * - Défense et Industrie -> Défense & Industrie
+   */
+  const publicCategory = value => {
+    const v = normalize(value);
+    const map = {
+      'Recrutement': 'Recrutement',
+      'Parcours professionnels': 'RH & Parcours pro',
+      'Trajectoires professionnelles': 'RH & Parcours pro', /* compatibilité ancien contenu */
+      'Neurodiversité': 'Neurodiversité',
+      'Gestion': 'Management',
+      'Management': 'Management',
+      'Défense et Industrie': 'Défense & Industrie',
+      'Défense & Industrie': 'Défense & Industrie'
+    };
+    return map[v] || v;
+  };
+
+  const FILTERS = [
+    ['Tous', 'Tous'],
+    ['Réflexion B2R', 'Réflexions B2R'],
+    ['À lire', 'À lire'],
+    ['Vidéo', 'Vidéos'],
+    ['Recrutement', 'Recrutement'],
+    ['RH & Parcours pro', 'RH & Parcours pro'],
+    ['Neurodiversité', 'Neurodiversité'],
+    ['Management', 'Management'],
+    ['Défense & Industrie', 'Défense & Industrie']
+  ];
+
+  const rebuildFilters = () => {
+    const nav = document.querySelector('.r-filters');
+    if (!nav) return;
+    nav.innerHTML = FILTERS.map(([value, label], index) =>
+      `<button class="r-filter${index === 0 ? ' active' : ''}" data-filter="${esc(value)}" type="button">${esc(label)}</button>`
+    ).join('');
   };
 
   const action = i => {
@@ -50,39 +93,75 @@
     }>${t} →</a>`;
   };
 
-  const card = i => {
-    const regard = i.mon_regard ? excerpt(i.mon_regard, 320) : '';
+  const absoluteUrl = i => {
+    if (!i.url) return '';
+    try {
+      return new URL(i.url, window.location.href).href;
+    } catch {
+      return i.url;
+    }
+  };
 
-    return `<article class="r-card" data-type="${esc(i.type || 'Réflexion')}" data-cat="${esc(i.categorie || '')}">
+  const shareButton = i => {
+    const url = absoluteUrl(i);
+    if (!url) return '';
+    return `<button type="button" class="r-card-share" data-share-url="${esc(url)}" data-share-title="${esc(i.titre || 'B2R TALENTS')}">Partager</button>`;
+  };
+
+  const regardBlock = (text, mobile = false) => {
+    const full = normalize(text);
+    if (!full) return '';
+
+    const short = excerpt(full, mobile ? 210 : 245);
+    const expandable = short !== full;
+    const cls = mobile ? 'r-mobile-regard' : 'r-card-regard';
+
+    return `<div class="r-regard-wrap">
+      <p class="${cls}"><strong>Mon regard.</strong>
+        <span class="r-regard-short">${esc(short)}</span>
+        <span class="r-regard-full" hidden>${esc(full)}</span>
+      </p>
+      ${expandable ? `<button type="button" class="r-regard-toggle" aria-expanded="false">Lire mon regard</button>` : ''}
+    </div>`;
+  };
+
+  const card = i => {
+    const cat = publicCategory(i.categorie || '');
+    return `<article class="r-card" data-type="${esc(i.type || 'Réflexion')}" data-cat="${esc(cat)}">
       ${i.image ? `<div class="r-card-image"><img src="${esc(i.image)}" alt=""></div>` : ''}
       <div class="r-card-body">
         <div class="r-card-meta">
           <span>${esc(i.type || 'Réflexion')}</span>
-          ${i.categorie ? `<span>${esc(i.categorie)}</span>` : ''}
+          ${cat ? `<span>${esc(cat)}</span>` : ''}
           ${i.date ? `<time datetime="${esc(i.date)}">${esc(fmt(i.date))}</time>` : ''}
         </div>
         <h3>${esc(i.titre || 'Sans titre')}</h3>
         <p class="r-card-summary">${esc(i.resume || '')}</p>
-        ${regard ? `<p class="r-card-regard"><strong>Mon regard.</strong> ${esc(regard)}</p>` : ''}
+        ${regardBlock(i.mon_regard, false)}
         <div class="r-card-foot">
           ${i.source ? `<span class="r-card-source">${esc(i.source)}</span>` : ''}
-          ${action(i)}
+          <div class="r-card-actions">
+            ${shareButton(i)}
+            ${action(i)}
+          </div>
         </div>
       </div>
     </article>`;
   };
 
   const mobile = i => {
-    const regard = i.mon_regard ? excerpt(i.mon_regard, 230) : '';
-
+    const cat = publicCategory(i.categorie || '');
     return `<article class="m-card">
       <div class="r-mobile-meta">
-        ${esc(i.type || 'Réflexion')}${i.categorie ? ' · ' + esc(i.categorie) : ''}
+        ${esc(i.type || 'Réflexion')}${cat ? ' · ' + esc(cat) : ''}
       </div>
       <h3>${esc(i.titre || 'Sans titre')}</h3>
       <p class="r-mobile-summary">${esc(i.resume || '')}</p>
-      ${regard ? `<p class="r-mobile-regard"><strong>Mon regard.</strong> ${esc(regard)}</p>` : ''}
-      ${action(i)}
+      ${regardBlock(i.mon_regard, true)}
+      <div class="r-mobile-actions">
+        ${shareButton(i)}
+        ${action(i)}
+      </div>
     </article>`;
   };
 
@@ -184,6 +263,8 @@
     }
   }
 
+  rebuildFilters();
+
   fetch('contenus.json', { cache: 'no-store' })
     .then(r => {
       if (!r.ok) throw new Error('HTTP ' + r.status);
@@ -206,7 +287,58 @@
       if (m) m.innerHTML = msg;
     });
 
-  document.addEventListener('click', e => {
+  document.addEventListener('click', async e => {
+    const regardToggle = e.target.closest('.r-regard-toggle');
+    if (regardToggle) {
+      e.preventDefault();
+      const wrap = regardToggle.closest('.r-regard-wrap');
+      if (!wrap) return;
+
+      const short = wrap.querySelector('.r-regard-short');
+      const full = wrap.querySelector('.r-regard-full');
+      const open = regardToggle.getAttribute('aria-expanded') === 'true';
+
+      if (short) short.hidden = !open;
+      if (full) full.hidden = open;
+      regardToggle.setAttribute('aria-expanded', String(!open));
+      regardToggle.textContent = open ? 'Lire mon regard' : 'Réduire';
+      return;
+    }
+
+    const share = e.target.closest('.r-card-share');
+    if (share) {
+      e.preventDefault();
+
+      const data = {
+        title: share.dataset.shareTitle || 'B2R TALENTS',
+        url: share.dataset.shareUrl || window.location.href
+      };
+
+      try {
+        if (navigator.share) {
+          await navigator.share(data);
+        } else if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(data.url);
+          const previous = share.textContent;
+          share.textContent = 'Lien copié ✓';
+          window.setTimeout(() => {
+            share.textContent = previous;
+          }, 1800);
+        } else {
+          window.prompt('Copiez ce lien :', data.url);
+        }
+      } catch (err) {
+        if (err && err.name !== 'AbortError') {
+          try {
+            await navigator.clipboard.writeText(data.url);
+          } catch {
+            window.prompt('Copiez ce lien :', data.url);
+          }
+        }
+      }
+      return;
+    }
+
     const f = e.target.closest('.r-filter');
     if (f) {
       e.preventDefault();
