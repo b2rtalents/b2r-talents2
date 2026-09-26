@@ -9,6 +9,7 @@ import shutil
 import sys
 import unicodedata
 from pathlib import Path
+from urllib.parse import quote
 
 import yaml
 from PIL import Image
@@ -104,6 +105,12 @@ def article_html(data: dict, body: str, slug: str, image_url: str) -> str:
     canonical = f"{SITE}/reflexions/publications/{slug}/"
     og_image = f"{SITE}{image_url}" if image_url else f"{SITE}/assets/official/logo-b2r-talents.png"
     body = calloutify(body)
+
+    share_url = quote(canonical, safe="")
+    share_whatsapp = quote(f"{title} — {canonical}", safe="")
+    share_mail_subject = quote(title, safe="")
+    share_mail_body = quote(f"{summary}\n\n{canonical}", safe="")
+
     structured = {
         "@context": "https://schema.org",
         "@type": "Article",
@@ -117,11 +124,17 @@ def article_html(data: dict, body: str, slug: str, image_url: str) -> str:
         "image": [og_image],
         "articleSection": category,
     }
+
     cover = (
         f'<div class="cover-wrap"><img class="cover" src="{html.escape(image_url)}" '
         f'alt="Illustration de l’article {html.escape(title)}"></div>'
         if image_url else ""
     )
+
+    title_js = json.dumps(title, ensure_ascii=False)
+    summary_js = json.dumps(summary, ensure_ascii=False)
+    canonical_js = json.dumps(canonical, ensure_ascii=False)
+
     return f'''<!doctype html>
 <html lang="fr">
 <head>
@@ -155,11 +168,13 @@ h1{{font-size:48px;line-height:1.05;color:var(--marine);margin:0;max-width:980px
 .article ul,.article ol{{font-size:18px;line-height:1.7;padding-left:26px}}.article blockquote{{margin:30px 0;padding:18px 24px;border-left:4px solid var(--blue);background:#f7fbff;color:#294f72}}
 .callout{{margin:34px -8px;padding:26px 28px;border-left:5px solid var(--gold);background:#f8fbfe;border-radius:0 12px 12px 0;font-size:21px;line-height:1.55;font-weight:700;color:var(--marine)}}
 .article-footer{{margin-top:50px;padding-top:28px;border-top:1px solid var(--line)}}.article-footer h3{{color:var(--marine);margin:0 0 12px}}.article-footer p{{font-size:14px;color:var(--muted);line-height:1.6}}
+.sharebox{{margin:30px 0 6px;padding:22px;border:1px solid var(--line);background:#f8fbfe;border-radius:14px}}.sharebox h3{{font-size:19px;margin:0 0 7px;color:var(--marine)}}.sharebox p{{font-size:13.5px;margin:0 0 16px;color:var(--muted);line-height:1.5}}
+.share-actions{{display:flex;flex-wrap:wrap;gap:9px}}.share-btn{{appearance:none;border:1px solid #cddceb;background:#fff;color:var(--marine);border-radius:9px;padding:9px 11px;font:700 13px Arial,Helvetica,sans-serif;text-decoration:none;cursor:pointer}}.share-btn:hover,.share-btn:focus-visible{{border-color:var(--blue);color:var(--blue)}}.share-btn.primary{{background:var(--marine);border-color:var(--marine);color:#fff}}.share-btn.primary:hover,.share-btn.primary:focus-visible{{background:var(--blue);border-color:var(--blue);color:#fff}}.share-status{{min-height:18px;margin-top:10px;font-size:12.5px;color:var(--muted)}}
 .sidebar{{position:sticky;top:24px}}.sidecard{{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:18px}}.sidecard h3{{margin:0 0 10px;color:var(--marine);font-size:18px}}.sidecard p{{margin:0;color:var(--muted);font-size:14px;line-height:1.55}}
 .cta{{display:block;text-align:center;margin-top:16px;background:var(--marine);color:#fff;text-decoration:none;font-weight:700;border-radius:10px;padding:13px 16px}}.back{{display:inline-block;margin-top:12px;color:var(--blue);font-size:14px;font-weight:700;text-decoration:none}}
 .footer{{background:var(--marine);color:#fff}}.footer-wrap{{max-width:1180px;margin:auto;padding:26px 24px;font-size:13px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}}
 @media(max-width:900px){{h1{{font-size:38px}}.lead{{font-size:19px}}.layout{{grid-template-columns:1fr;gap:24px}}.sidebar{{position:static}}}}
-@media(max-width:640px){{.nav{{align-items:flex-start;flex-direction:column;gap:12px}}.navlinks{{gap:11px 16px}}.hero-wrap{{padding-top:30px}}h1{{font-size:33px}}.lead{{font-size:18px}}.article{{padding:32px 22px}}.article p{{font-size:17px;line-height:1.72}}.article h2{{font-size:26px;margin-top:42px}}.callout{{font-size:19px;margin-left:0;margin-right:0}}}}
+@media(max-width:640px){{.nav{{align-items:flex-start;flex-direction:column;gap:12px}}.navlinks{{gap:11px 16px}}.hero-wrap{{padding-top:30px}}h1{{font-size:33px}}.lead{{font-size:18px}}.article{{padding:32px 22px}}.article p{{font-size:17px;line-height:1.72}}.article h2{{font-size:26px;margin-top:42px}}.callout{{font-size:19px;margin-left:0;margin-right:0}}.share-actions{{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}}.share-btn{{text-align:center}}}}
 </style>
 </head>
 <body>
@@ -176,14 +191,90 @@ h1{{font-size:48px;line-height:1.05;color:var(--marine);margin:0;max-width:980px
 </div>{cover}</section>
 <main class="layout"><article class="article">
 {body}
-<div class="article-footer"><h3>À propos de B2R TALENTS</h3>
+<div class="article-footer">
+<h3>À propos de B2R TALENTS</h3>
 <p>B2R TALENTS intervient en recrutement, chasse et Executive Search, avec une attention particulière portée aux environnements Défense, Industrie et aux profils rares ou stratégiques.</p>
-<a class="back" href="/reflexions/">← Retour aux Réflexions</a></div>
+
+<div class="sharebox" aria-labelledby="share-title">
+<h3 id="share-title">Partager cette réflexion</h3>
+<p>Vous pouvez l’envoyer directement sur votre réseau ou simplement copier son lien.</p>
+<div class="share-actions">
+<a class="share-btn primary" href="https://www.linkedin.com/sharing/share-offsite/?url={share_url}" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+<a class="share-btn" href="https://www.facebook.com/sharer/sharer.php?u={share_url}" target="_blank" rel="noopener noreferrer">Facebook</a>
+<a class="share-btn" href="https://wa.me/?text={share_whatsapp}" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+<a class="share-btn" href="mailto:?subject={share_mail_subject}&body={share_mail_body}">E-mail</a>
+<button class="share-btn" type="button" data-copy-link>Copier le lien</button>
+<button class="share-btn" type="button" data-native-share>Partager…</button>
+</div>
+<div class="share-status" aria-live="polite"></div>
+</div>
+
+<a class="back" href="/reflexions/">← Retour aux Réflexions</a>
+</div>
 </article>
 <aside class="sidebar"><div class="sidecard"><h3>Une réflexion vous interpelle ?</h3><p>Échangeons autour de vos enjeux de recrutement, de compétences et de trajectoires professionnelles.</p>
 <a class="cta" href="https://cal.com/b2r-talents/echangepro?overlayCalendar=true">Prendre rendez-vous</a></div>
 <div class="sidecard"><h3>Catégorie</h3><p>{html.escape(category)}</p></div></aside></main>
 <footer class="footer"><div class="footer-wrap"><span>© 2026 B2R TALENTS</span><span>Recrutement • Chasse • Executive Search</span></div></footer>
+
+<script>
+(() => {{
+  const shareData = {{
+    title: {title_js},
+    text: {summary_js},
+    url: {canonical_js}
+  }};
+
+  const status = document.querySelector('.share-status');
+  const nativeBtn = document.querySelector('[data-native-share]');
+  const copyBtn = document.querySelector('[data-copy-link]');
+
+  const say = message => {{
+    if (!status) return;
+    status.textContent = message;
+    window.setTimeout(() => {{
+      if (status.textContent === message) status.textContent = '';
+    }}, 2200);
+  }};
+
+  const copyLink = async () => {{
+    try {{
+      if (navigator.clipboard && window.isSecureContext) {{
+        await navigator.clipboard.writeText(shareData.url);
+      }} else {{
+        const area = document.createElement('textarea');
+        area.value = shareData.url;
+        area.setAttribute('readonly', '');
+        area.style.position = 'fixed';
+        area.style.opacity = '0';
+        document.body.appendChild(area);
+        area.select();
+        document.execCommand('copy');
+        area.remove();
+      }}
+      say('Lien copié ✓');
+    }} catch (err) {{
+      say('Copie impossible : sélectionnez l’adresse dans votre navigateur.');
+    }}
+  }};
+
+  if (copyBtn) copyBtn.addEventListener('click', copyLink);
+
+  if (nativeBtn) {{
+    if (!navigator.share) {{
+      nativeBtn.hidden = true;
+    }} else {{
+      nativeBtn.addEventListener('click', async () => {{
+        try {{
+          await navigator.share(shareData);
+        }} catch (err) {{
+          if (err && err.name !== 'AbortError') await copyLink();
+        }}
+      }});
+    }}
+  }}
+}})();
+</script>
 </body></html>'''
 
 
