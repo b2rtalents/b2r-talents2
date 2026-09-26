@@ -1,6 +1,6 @@
 ---
 title: Les ressources humaines, parent pauvre de la performance ?
-date: 2026-09-26
+date: 2026-09-29
 status: draft
 category: Trajectoires professionnelles
 featured: false
