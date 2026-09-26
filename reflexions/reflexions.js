@@ -50,40 +50,9 @@
     }>${t} →</a>`;
   };
 
-
-  const absoluteUrl = i => {
-    if (!i.url) return '';
-    try {
-      return new URL(i.url, window.location.href).href;
-    } catch {
-      return i.url;
-    }
-  };
-
-  const shareButton = i => {
-    const url = absoluteUrl(i);
-    if (!url) return '';
-    return `<button type="button" class="r-card-share" data-share-url="${esc(url)}" data-share-title="${esc(i.titre || 'B2R TALENTS')}">Partager</button>`;
-  };
-
-  const regardBlock = (text, mobile = false) => {
-    const full = normalize(text);
-    if (!full) return '';
-
-    const short = excerpt(full, mobile ? 210 : 245);
-    const expandable = short !== full;
-    const cls = mobile ? 'r-mobile-regard' : 'r-card-regard';
-
-    return `<div class="r-regard-wrap">
-      <p class="${cls}"><strong>Mon regard.</strong>
-        <span class="r-regard-short">${esc(short)}</span>
-        <span class="r-regard-full" hidden>${esc(full)}</span>
-      </p>
-      ${expandable ? `<button type="button" class="r-regard-toggle" aria-expanded="false">Lire mon regard</button>` : ''}
-    </div>`;
-  };
-
   const card = i => {
+    const regard = i.mon_regard ? excerpt(i.mon_regard, 320) : '';
+
     return `<article class="r-card" data-type="${esc(i.type || 'Réflexion')}" data-cat="${esc(i.categorie || '')}">
       ${i.image ? `<div class="r-card-image"><img src="${esc(i.image)}" alt=""></div>` : ''}
       <div class="r-card-body">
@@ -94,30 +63,26 @@
         </div>
         <h3>${esc(i.titre || 'Sans titre')}</h3>
         <p class="r-card-summary">${esc(i.resume || '')}</p>
-        ${regardBlock(i.mon_regard, false)}
+        ${regard ? `<p class="r-card-regard"><strong>Mon regard.</strong> ${esc(regard)}</p>` : ''}
         <div class="r-card-foot">
           ${i.source ? `<span class="r-card-source">${esc(i.source)}</span>` : ''}
-          <div class="r-card-actions">
-            ${shareButton(i)}
-            ${action(i)}
-          </div>
+          ${action(i)}
         </div>
       </div>
     </article>`;
   };
 
   const mobile = i => {
+    const regard = i.mon_regard ? excerpt(i.mon_regard, 230) : '';
+
     return `<article class="m-card">
       <div class="r-mobile-meta">
         ${esc(i.type || 'Réflexion')}${i.categorie ? ' · ' + esc(i.categorie) : ''}
       </div>
       <h3>${esc(i.titre || 'Sans titre')}</h3>
       <p class="r-mobile-summary">${esc(i.resume || '')}</p>
-      ${regardBlock(i.mon_regard, true)}
-      <div class="r-mobile-actions">
-        ${shareButton(i)}
-        ${action(i)}
-      </div>
+      ${regard ? `<p class="r-mobile-regard"><strong>Mon regard.</strong> ${esc(regard)}</p>` : ''}
+      ${action(i)}
     </article>`;
   };
 
@@ -241,58 +206,7 @@
       if (m) m.innerHTML = msg;
     });
 
-  document.addEventListener('click', async e => {
-    const regardToggle = e.target.closest('.r-regard-toggle');
-    if (regardToggle) {
-      e.preventDefault();
-      const wrap = regardToggle.closest('.r-regard-wrap');
-      if (!wrap) return;
-
-      const short = wrap.querySelector('.r-regard-short');
-      const full = wrap.querySelector('.r-regard-full');
-      const open = regardToggle.getAttribute('aria-expanded') === 'true';
-
-      if (short) short.hidden = !open;
-      if (full) full.hidden = open;
-      regardToggle.setAttribute('aria-expanded', String(!open));
-      regardToggle.textContent = open ? 'Lire mon regard' : 'Réduire';
-      return;
-    }
-
-    const share = e.target.closest('.r-card-share');
-    if (share) {
-      e.preventDefault();
-
-      const data = {
-        title: share.dataset.shareTitle || 'B2R TALENTS',
-        url: share.dataset.shareUrl || window.location.href
-      };
-
-      try {
-        if (navigator.share) {
-          await navigator.share(data);
-        } else if (navigator.clipboard && window.isSecureContext) {
-          await navigator.clipboard.writeText(data.url);
-          const previous = share.textContent;
-          share.textContent = 'Lien copié ✓';
-          window.setTimeout(() => {
-            share.textContent = previous;
-          }, 1800);
-        } else {
-          window.prompt('Copiez ce lien :', data.url);
-        }
-      } catch (err) {
-        if (err && err.name !== 'AbortError') {
-          try {
-            await navigator.clipboard.writeText(data.url);
-          } catch {
-            window.prompt('Copiez ce lien :', data.url);
-          }
-        }
-      }
-      return;
-    }
-
+  document.addEventListener('click', e => {
     const f = e.target.closest('.r-filter');
     if (f) {
       e.preventDefault();
