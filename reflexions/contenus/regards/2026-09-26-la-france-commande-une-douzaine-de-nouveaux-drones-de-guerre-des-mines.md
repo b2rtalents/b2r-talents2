@@ -1,7 +1,7 @@
 ---
 title: La France commande une douzaine de nouveaux drones de guerre des mines
 date: 2026-09-26
-status: draft
+status: published
 category: Défense & Industrie
 source: MER ET MARINE
 url: https://www.meretmarine.com/fr/defense/la-france-commande-une-douzaine-de-nouveaux-drones-de-guerre-des-mines?utm_source=chatgpt.com
