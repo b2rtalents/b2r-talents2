@@ -2,7 +2,7 @@
 title: "TRANSFORMATION : ON NE CHANGE PAS LES OUTILS SANS FAIRE ÉVOLUER LES
   COMPÉTENCES"
 date: 2026-09-26
-status: draft
+status: published
 category: Trajectoires professionnelles
 featured: false
 summary: "Technologies, IA, SIRH, nouveaux procédés : transformer une entreprise
