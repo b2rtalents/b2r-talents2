@@ -5,7 +5,7 @@ body{overflow-x:auto}
 .site-shell{width:var(--page-width);min-width:var(--page-width);margin:0 auto;background:#fff}
 .slice{position:relative;width:1448px;margin:0;padding:0;overflow:hidden}
 .slice>img{display:block;width:1448px;height:auto;margin:0;padding:0;border:0;pointer-events:none!important;user-select:none}
-.slice-header{height:65px}.slice-hero{height:319px}.slice-body{height:491px}.slice-cta{height:134px}.slice-footer{height:77px}
+.slice-header{height:65px}.slice-hero{height:307px}.slice-body{height:491px}.slice-cta{height:134px}.slice-footer{height:77px}
 .hotspot{position:absolute;display:block;background:transparent!important;border:0!important;box-shadow:none!important;color:transparent!important;text-decoration:none!important;font-size:0;line-height:0;z-index:501;cursor:pointer;outline-offset:2px;pointer-events:auto!important}
 .hotspot:focus-visible{outline:2px solid var(--blue);outline-offset:-2px}
 .sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
@@ -21,8 +21,8 @@ body{overflow-x:auto}
 .hs-about{left:934px;top:7px;width:70px;height:52px}
 .hs-contact{left:1004px;top:7px;width:78px;height:52px}
 .hs-rdv-header{left:1134px;top:5px;width:224px;height:55px}
-/* Hero Neurodiversité B2B */
-.hs-hero-cta{left:52px;top:215px;width:330px;height:57px}
+/* Hero Neurodiversité */
+.hs-hero-cta{left:84px;top:257px;width:278px;height:48px}
 /* Corps — les trois « En savoir plus » */
 .hs-service-identifer{left:160px;top:183px;width:150px;height:43px}
 .hs-service-sensibiliser{left:599px;top:183px;width:154px;height:43px}
@@ -40,7 +40,6 @@ body{overflow-x:auto}
 .footer-nav-layer .hs-f-contact{left:1045px;top:0;width:85px;height:77px}
 .footer-nav-layer .hs-linkedin{left:1182px;top:4px;width:60px;height:60px;z-index:510!important}
 @media(max-width:1447px){.site-shell{margin-left:0;margin-right:0}}
-
 
 /* MASTER V2 — couche interactive sécurisée, sans impact visuel */
 .slice > img{pointer-events:none!important;user-select:none!important;-webkit-user-drag:none!important}
