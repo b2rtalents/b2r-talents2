@@ -1,10 +1,10 @@
 ---
 title: La France commande une douzaine de nouveaux drones de guerre des mines
-date: 2026-09-26
+date: 2026-09-07
 status: published
 category: Défense & Industrie
 source: MER ET MARINE
-url: https://www.meretmarine.com/fr/defense/la-france-commande-une-douzaine-de-nouveaux-drones-de-guerre-des-mines?utm_source=chatgpt.com
+url: https://www.meretmarine.com/fr/defense/la-france-commande-une-douzaine-de-nouveaux-drones-de-guerre-des-mines
 summary: La montée en puissance du programme SLAM-F illustre l’accélération de
   la robotisation de la guerre des mines. La France renforce son parc de drones
   de surface et sous-marins tout en préparant de nouvelles plateformes capables
