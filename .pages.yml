@@ -1,0 +1,272 @@
+media:
+  - name: images
+    label: Illustrations Réflexions
+    input: reflexions/media
+    output: /reflexions/media
+    rename: safe
+    extensions: [jpg, jpeg, png, webp]
+
+settings:
+  commit:
+    templates:
+      create: "Réflexions : ajout de {filename}"
+      update: "Réflexions : modification de {filename}"
+
+content:
+  - name: articles
+    label: Articles B2R
+    type: collection
+    path: reflexions/contenus/articles
+    format: yaml-frontmatter
+    filename:
+      template: "{year}-{month}-{day}-{title}.md"
+      field: false
+    operations:
+      create: true
+      rename: false
+      delete: false
+    view:
+      fields: [title, status, category, date]
+      primary: title
+      sort: [date, title]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - name: title
+        label: Titre
+        type: string
+        required: true
+
+      - name: date
+        label: Date
+        type: date
+        required: true
+        options:
+          format: yyyy-MM-dd
+
+      - name: status
+        label: Statut
+        type: select
+        required: true
+        default: draft
+        options:
+          values:
+            - name: draft
+              label: Brouillon
+            - name: published
+              label: Publié
+            - name: archived
+              label: Archivé
+
+      - name: category
+        label: Catégorie
+        type: select
+        required: true
+        options:
+          values:
+            - Recrutement
+            - Défense & Industrie
+            - Neurodiversité
+            - Management
+            - Trajectoires professionnelles
+
+      - name: featured
+        label: Mettre en avant
+        type: boolean
+        default: false
+
+      - name: summary
+        label: Chapô / résumé
+        type: text
+        required: true
+        description: Texte court affiché sur la vignette et utilisé pour le référencement.
+
+      - name: image
+        label: Illustration
+        type: image
+        options:
+          media: images
+          rename: safe
+
+      - name: body
+        label: Article
+        type: rich-text
+        required: true
+        options:
+          format: html
+          switcher: false
+          media: images
+          rename: safe
+
+  - name: regards
+    label: Regards extérieurs
+    type: collection
+    path: reflexions/contenus/regards
+    format: yaml-frontmatter
+    filename:
+      template: "{year}-{month}-{day}-{title}.md"
+      field: false
+    operations:
+      create: true
+      rename: false
+      delete: false
+    view:
+      fields: [title, status, source, date]
+      primary: title
+      sort: [date, title]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - name: title
+        label: Titre
+        type: string
+        required: true
+
+      - name: date
+        label: Date
+        type: date
+        required: true
+        options:
+          format: yyyy-MM-dd
+
+      - name: status
+        label: Statut
+        type: select
+        required: true
+        default: draft
+        options:
+          values:
+            - name: draft
+              label: Brouillon
+            - name: published
+              label: Publié
+            - name: archived
+              label: Archivé
+
+      - name: category
+        label: Catégorie
+        type: select
+        required: true
+        options:
+          values:
+            - Recrutement
+            - Défense & Industrie
+            - Neurodiversité
+            - Management
+            - Trajectoires professionnelles
+
+      - name: source
+        label: Source
+        type: string
+        required: true
+
+      - name: url
+        label: Lien vers l'article original
+        type: string
+        required: true
+
+      - name: summary
+        label: Résumé
+        type: text
+        required: true
+
+      - name: image
+        label: Illustration
+        type: image
+        options:
+          media: images
+          rename: safe
+
+      - name: body
+        label: Mon regard
+        type: rich-text
+        required: true
+        options:
+          format: html
+          switcher: false
+          media: false
+
+  - name: videos
+    label: Vidéos
+    type: collection
+    path: reflexions/contenus/videos
+    format: yaml-frontmatter
+    filename:
+      template: "{year}-{month}-{day}-{title}.md"
+      field: false
+    operations:
+      create: true
+      rename: false
+      delete: false
+    view:
+      fields: [title, status, date]
+      primary: title
+      sort: [date, title]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - name: title
+        label: Titre
+        type: string
+        required: true
+
+      - name: date
+        label: Date
+        type: date
+        required: true
+        options:
+          format: yyyy-MM-dd
+
+      - name: status
+        label: Statut
+        type: select
+        required: true
+        default: draft
+        options:
+          values:
+            - name: draft
+              label: Brouillon
+            - name: published
+              label: Publié
+            - name: archived
+              label: Archivé
+
+      - name: category
+        label: Catégorie
+        type: select
+        required: true
+        options:
+          values:
+            - Recrutement
+            - Défense & Industrie
+            - Neurodiversité
+            - Management
+            - Trajectoires professionnelles
+
+      - name: url
+        label: Lien de la vidéo
+        type: string
+        required: true
+
+      - name: summary
+        label: Introduction
+        type: text
+        required: true
+
+      - name: image
+        label: Illustration
+        type: image
+        options:
+          media: images
+          rename: safe
+
+      - name: body
+        label: Commentaire
+        type: rich-text
+        options:
+          format: html
+          switcher: false
+          media: false
