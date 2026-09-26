@@ -25,6 +25,17 @@ content:
       create: true
       rename: false
       delete: false
+    actions:
+      - name: publish-article
+        label: Publier sur B2R-TALENTS.FR
+        scope: entry
+        workflow: publish-reflexions.yml
+        ref: current
+        cancelable: false
+        confirm:
+          title: Publier cet article ?
+          message: Vérifiez que le statut est « Publié ». Le site ne sera modifié que si tous les contrôles réussissent.
+          button: Publier
     view:
       fields: [title, status, category, date]
       primary: title
@@ -111,6 +122,17 @@ content:
       create: true
       rename: false
       delete: false
+    actions:
+      - name: publish-regard
+        label: Publier sur B2R-TALENTS.FR
+        scope: entry
+        workflow: publish-reflexions.yml
+        ref: current
+        cancelable: false
+        confirm:
+          title: Publier ce regard extérieur ?
+          message: Vérifiez que le statut est « Publié ». Le site ne sera modifié que si tous les contrôles réussissent.
+          button: Publier
     view:
       fields: [title, status, source, date]
       primary: title
@@ -200,6 +222,17 @@ content:
       create: true
       rename: false
       delete: false
+    actions:
+      - name: publish-video
+        label: Publier sur B2R-TALENTS.FR
+        scope: entry
+        workflow: publish-reflexions.yml
+        ref: current
+        cancelable: false
+        confirm:
+          title: Publier cette vidéo ?
+          message: Vérifiez que le statut est « Publié ». Le site ne sera modifié que si tous les contrôles réussissent.
+          button: Publier
     view:
       fields: [title, status, date]
       primary: title
