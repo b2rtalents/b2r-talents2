@@ -1,7 +1,7 @@
 ---
 title: "DÉFENSE : L’INNOVATION VA PLUS VITE QUE NOS FICHES DE POSTE"
 date: 2026-09-26
-status: draft
+status: published
 category: Défense & Industrie
 featured: false
 summary: Dans la Défense, les technologies, les usages et les besoins
