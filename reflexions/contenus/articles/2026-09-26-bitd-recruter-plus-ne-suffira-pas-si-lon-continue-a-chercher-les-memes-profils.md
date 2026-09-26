@@ -2,7 +2,7 @@
 title: "BITD : recruter plus ne suffira pas si l’on continue à chercher les
   mêmes profils"
 date: 2026-09-26
-status: draft
+status: published
 category: Défense & Industrie
 featured: false
 summary: Face aux tensions de recrutement dans la BITD, la question n’est
