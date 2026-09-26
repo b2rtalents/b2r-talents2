@@ -158,15 +158,25 @@ body{overflow-x:auto}
   overflow:hidden;
 }
 
+.r-regard-wrap{margin-top:2px}
 .r-card-regard{
   padding-top:11px;
   border-top:1px solid #e5edf5;
   color:#294f72!important;
-  display:-webkit-box;
-  -webkit-box-orient:vertical;
-  -webkit-line-clamp:5;
-  overflow:hidden;
+  margin-bottom:6px!important;
 }
+.r-regard-short[hidden],.r-regard-full[hidden]{display:none!important}
+.r-regard-toggle{
+  appearance:none;
+  border:0;
+  background:transparent;
+  padding:0;
+  font:700 12.5px Arial,Helvetica,sans-serif;
+  color:#1858AA;
+  cursor:pointer;
+  border-bottom:1px solid rgba(24,88,170,.35);
+}
+.r-regard-toggle:hover,.r-regard-toggle:focus-visible{color:#07315B;border-bottom-color:#07315B}
 
 .r-card-foot{
   display:flex;
@@ -178,13 +188,17 @@ body{overflow-x:auto}
 }
 
 .r-card-source{font-size:12px;color:#71869a}
+.r-card-actions{display:flex;align-items:center;gap:11px}
+.r-card-share{appearance:none;border:0;background:transparent;padding:0;font:700 13px Arial,Helvetica,sans-serif;color:#567694;cursor:pointer;border-bottom:1px solid rgba(86,118,148,.28)}
+.r-card-share:hover,.r-card-share:focus-visible{color:#1858AA;border-bottom-color:#1858AA}
 .r-card-link{font-size:13px;font-weight:700;color:#1858AA;text-decoration:none;border-bottom:1px solid rgba(24,88,170,.35)}
 .r-card-wip{font-size:12px;font-weight:700;color:#7b8d9f;background:#f0f4f8;border-radius:99px;padding:7px 10px}
 .r-error{grid-column:1/-1;padding:24px;background:#fff;border:1px solid #d8e3ee;border-radius:12px;color:#7a3741}
 
 .r-mobile-meta{font-size:11px;font-weight:700;color:#1858AA;margin-bottom:8px;text-transform:uppercase;letter-spacing:.02em}
 .r-mobile-summary{margin-bottom:10px}
-.r-mobile-regard{margin-top:10px!important;padding-top:10px;border-top:1px solid #e6edf4;color:#294f72!important}
+.r-mobile-regard{margin-top:10px!important;margin-bottom:6px!important;padding-top:10px;border-top:1px solid #e6edf4;color:#294f72!important}
+.r-mobile-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:12px}
 
 @media (min-width:768px) and (max-width:1024px){
   .r-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
