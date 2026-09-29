@@ -54,3 +54,66 @@ body{overflow-x:auto}
 .legal-footer-links a{color:rgba(255,255,255,.92);text-decoration:none;border-bottom:1px solid rgba(255,255,255,.35);padding-bottom:1px}
 .legal-footer-links a:hover,.legal-footer-links a:focus-visible{color:#fff;border-bottom-color:#fff}
 .legal-footer-links span{color:rgba(255,255,255,.55)}
+
+/* V2 validée — ancrage territorial / SEO / rayonnement */
+.implantation-section{
+  margin:0 0 18px;
+  padding:22px 48px 26px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:linear-gradient(135deg,#fff 0%,#f7fafd 100%);
+  box-shadow:0 2px 8px rgba(7,49,91,.04);
+}
+.implantation-section .kicker{margin-bottom:8px}
+.implantation-seo{
+  margin:0 auto 18px;
+  max-width:1240px;
+  color:#365b7f;
+  font-size:14.5px;
+  line-height:1.5;
+}
+.implantation-seo strong{color:#274f76}
+.implantation-map{
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  width:100%;
+}
+.implantation-map img{
+  display:block;
+  width:min(560px,100%);
+  height:auto;
+  border:1px solid #d9e4ef;
+  border-radius:10px;
+  background:#fff;
+}
+
+@media (max-width:767px){
+  .native-page .implantation-section{
+    margin:0 0 14px!important;
+    padding:18px!important;
+    border-radius:10px!important;
+  }
+  .native-page .implantation-seo{
+    font-size:15px!important;
+    line-height:1.5!important;
+    margin-bottom:16px!important;
+  }
+  .native-page .implantation-map img{
+    width:100%!important;
+    max-width:560px!important;
+  }
+}
+@media (min-width:768px) and (max-width:1024px){
+  .native-page .implantation-section{
+    padding:22px 26px 24px!important;
+  }
+  .native-page .implantation-seo{
+    font-size:15px!important;
+    line-height:1.5!important;
+  }
+  .native-page .implantation-map img{
+    width:min(540px,100%)!important;
+  }
+}
+
