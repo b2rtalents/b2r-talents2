@@ -1,7 +1,7 @@
 ---
 title: MANAGER EST-IL ENCORE UNE PROMOTION ?
 date: 2026-10-06
-status: draft
+status: published
 category: Trajectoires professionnelles
 featured: false
 summary: "Longtemps, devenir manager constituait presque naturellement l’étape
