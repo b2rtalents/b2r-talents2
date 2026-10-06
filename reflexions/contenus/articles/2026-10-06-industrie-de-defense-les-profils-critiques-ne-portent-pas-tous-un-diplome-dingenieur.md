@@ -2,7 +2,7 @@
 title: "INDUSTRIE DE DÉFENSE : LES PROFILS CRITIQUES NE PORTENT PAS TOUS UN
   DIPLÔME D’INGÉNIEUR"
 date: 2026-10-06
-status: draft
+status: published
 category: Recrutement
 featured: false
 summary: Dans l’aéronautique et l’industrie de défense, les métiers en tension
