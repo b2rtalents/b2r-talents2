@@ -2,7 +2,7 @@
 title: "100 000 recrutements dans la Défense : le vrai risque est-il de passer à
   côté des talents ?"
 date: 2026-10-06
-status: draft
+status: published
 category: Défense & Industrie
 featured: false
 summary: La montée en puissance de l’industrie de défense française ouvre des
