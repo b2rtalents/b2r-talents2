@@ -1,7 +1,7 @@
 ---
 title: Le poste n’existe peut-être pas. Le besoin, lui, existe.
 date: 2026-10-07
-status: published
+status: draft
 category: Trajectoires professionnelles
 featured: false
 summary: Dans les TPE et PME de l’industrie de défense, croissance, nouveaux
