@@ -1,7 +1,7 @@
 ---
 title: "NEURODIVERSITÉ EN ENTREPRISE : AVANT D’INCLURE, ENCORE FAUT-IL COMPRENDRE"
-date: 2026-10-07
-status: draft
+date: 2026-10-19
+status: published
 category: Neurodiversité
 featured: false
 summary: "La neurodiversité entre progressivement dans le vocabulaire des
