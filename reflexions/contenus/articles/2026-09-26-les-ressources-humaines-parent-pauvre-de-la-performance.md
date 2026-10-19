@@ -1,7 +1,7 @@
 ---
 title: Les ressources humaines, parent pauvre de la performance ?
 date: 2026-09-29
-status: draft
+status: published
 category: Trajectoires professionnelles
 featured: false
 summary: Nous avons appris à mesurer ce que vend l’entreprise, ce qu’elle gagne
