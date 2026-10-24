@@ -1,0 +1,232 @@
+name: "B2R | Maintenance SEO et récupération"
+
+# Un seul fichier à ajouter depuis GitHub Web dans .github/workflows.
+# Installation initiale au push, puis reprise après chaque publication du CMS.
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/b2r-seo-recuperation.yml"
+  workflow_run:
+    workflows: ["Publier les Réflexions B2R"]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: b2r-seo-maintenance-recovery
+  cancel-in-progress: false
+
+jobs:
+  repair:
+    if: >-
+      github.event_name != 'workflow_run' ||
+      (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Lire le dépôt source sans écraser les publications existantes
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Vérifier le domaine et le moteur actuel
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(cat CNAME)" = 'b2r-talents.fr'
+          test -f scripts/generate_reflexions.py
+          test -f .github/workflows/publish-reflexions.yml
+      - name: Installer les composants seulement à la première exécution
+        shell: bash
+        run: |
+          if test -f scripts/seo_maintenance.py; then
+            echo "Moteur SEO déjà installé : aucun fichier remplacé."
+            exit 0
+          fi
+          python - <<'PY'
+          from pathlib import Path
+          import base64,hashlib,io,zipfile
+          repo=Path.cwd()
+          allowed=['.htaccess', 'atelier-trajectoires-professionnelles/index.html', 'reflexions/publications/lessh1greaterneurodiversite-en-entreprise-avant-dinclure-encore-faut-il-comprendrelessh1greater/index.html', 'robots.txt', 'scripts/seo_maintenance.py', 'sitemap.xml', 'tests/test_seo_maintenance.py']
+          expected={".htaccess": "b6a551f11b27b9d2eebad210e439e1f45b1746f9", "robots.txt": "45b3b12f15f6e573fe60085dade3653b48d1e1f2", "sitemap.xml": "4d7061175e466108ba7ce54531b770c809fbebb1", "reflexions/publications/lessh1greaterneurodiversite-en-entreprise-avant-dinclure-encore-faut-il-comprendrelessh1greater/index.html": "2991de038b1171523393e8c52af31f727b4ca66b"}
+          # Prévenir un écrasement silencieux si le dépôt a changé depuis le diagnostic.
+          for rel,sha_expected in expected.items():
+              dest=repo/rel
+              if not dest.is_file():
+                  raise SystemExit(f"Arrêt de sécurité : fichier absent {rel}")
+              blob=dest.read_bytes()
+              sha=hashlib.sha1(b"blob "+str(len(blob)).encode()+b"\0"+blob).hexdigest()
+              if sha!=sha_expected:
+                  raise SystemExit(f"Arrêt de sécurité : fichier changé depuis vérification {rel}")
+          encoded=''.join("""
+                        UEsDBBQAAAAIACQ6V10RhA9PeQEAAJECAAAJAAAALmh0YWNjZXNzrZLdShwxFMfv5ykOqNCCM9HWK/ED2Q6sUF07rr1Rd4nJGScl
+                        czI9SXYL4vu0z+GLebZli4Xaq0LI5/n/zy8n2YCRpkDOaO+iTi4Q2Aw29NoRwpuTQZsO1eTzGDK5rxl7pPS2Kg5O27Ngs0fog50z
+                        LtklrMxR0fya1nS/0k9ovTEKZGHrYTydXszHk8vpI8yWy+VNdfeOy6S9uMabquVNuD4f3a5FzSrBDLqUhriv1ItYCd16aOpPV/Xl
+                        dH7VnD7CdXP4fmd3++P2eX1bHKg131FRbMAFci/3Q4pgAkXkxdOPCHrgp+8RGNtAAi9JrWM06Uwn04GYwUzphKKTtKy/yFGQgFgO
+                        HFqMUWpF6D1Gdbz5CuNvvdFWlOqvOQTA4zdxi2rId16eIv1ciHPsdu8ZxYQJMwfrFshRClMiSUuMA7uIpV5oSqV1ZHzm1aEJMrQ6
+                        p9L50oR+YCQB+MPxH9SvEf0XCFUUNXPgD8Hk1W+CvZ09UNJVXep98QxQSwMEFAAAAAgAJDpXXSbv/PVfAQAAbwIAADAAAABhdGVs
+                        aWVyLXRyYWplY3RvaXJlcy1wcm9mZXNzaW9ubmVsbGVzL2luZGV4Lmh0bWyVkk9OAyEUxvc9BbKpJp1BXRkLJLVxZ1xoL0DhTQel
+                        gMyb1iYuPIQHcNtz9CaeRDpTky7rivD+fN8P3uNnJmjcRCA1Lp0c8P1BnPILQatEJa9BGcmXgIroWqUGUNAWq+KGHqJeLUHQlYV1
+                        DAkp0cEj+Fy1tgZrYWBlNRTdZWS9Ratc0WjlQFzR7IcWHcgJgrOQyCypF9AYbAIyVSZBQ34+v0gCkyMabfDkg9xdP5HZ5OH+cfbM
+                        Wd8/OGZJYR6wOSLxwXoD76MqOBfWGdxZ/5pFnaBa+eBtxqGkTlAJWiPG5pax+XUqMFN6bMoqMdUDFrqDYvTPcV9ewFtrV9kXqpyr
+                        j4wvx21y4nTJRicbUbqg1f6tZYLolIbz4WkSw4sxZwcNzrrJDfg8mI3kUU4BEUhUCyDdKP1ityVm2HU2UBKu/vkDE613W5OHtvvO
+                        C3NQ1tiCc8CZkiVnMWP0/qxfr19QSwMEFAAAAAgAlTpXXRjswh6PAQAArgMAAIIAAAByZWZsZXhpb25zL3B1YmxpY2F0aW9ucy9s
+                        ZXNzaDFncmVhdGVybmV1cm9kaXZlcnNpdGUtZW4tZW50cmVwcmlzZS1hdmFudC1kaW5jbHVyZS1lbmNvcmUtZmF1dC1pbC1jb21w
+                        cmVuZHJlbGVzc2gxZ3JlYXRlci9pbmRleC5odG1sxZNBblMxEIb3OYXxJiDVMXSFqN+TCmKHuoBewLHn5Y2Y2GY876WVWHAIDsC2
+                        58hNOAlO0orcIJKlkT2ef75fHrtXMQd5LKBG2VK/cIegyKdNpwfWvRvBx95tQbwKo+cK0ulJBvNeP58mv4VOzwi7klm0CjkJpHZr
+                        h1HGLsKMAcxxc4UJBT2ZGjxB9063foJC0N/BxDniDFxR9k8KUlvCUBgrqL+/fiuGiAxBMCf1U328/qrub798vrv/5uxJYnGOw3md
+                        pZ7BpIwpwsPVkInyrrETpu9NlDodfMoJG5FWI8PQ6VGk1A/Wrq/ZSANNUlcD25YjeGj9qy3TmlqFHDfpnB0MJPMf3fjZJzERU6CJ
+                        D8mQWxj8JAbJhLwtDCkyWP1i4NDdwI8J52YDBoY6nvl4ezMxdRcjrIGxSE/5JL1qIuQDvF5ehGj55sbZZyRnj5O6cOscH3tX+k8g
+                        Aqr4Dajj6KZNm6u49K2wVlgp5y/73Lch7J8isNr/UbT0LBiooQaZgJz1/crZ0lyd7NjT7/wHUEsDBBQAAAAIACQ6V122qd6gQQAA
+                        AEQAAAAKAAAAcm9ib3RzLnR4dAstTi3STUxPzSuxUtDicszJyS+3UtDn4grOLEnNTSywUsgoKSkottLXTzIq0i1JzAEqLNZLK9Iv
+                        hsjrVeTmcAEAUEsDBBQAAAAIACQ6V12OdAnDGhEAANovAAAaAAAAc2NyaXB0cy9zZW9fbWFpbnRlbmFuY2UucHm1Wt1y28qRvudT
+                        zIGTEriHBCUnldqVRZ1SZJ3YtbLklejjrZJ1WBAwJGGDAAwM9FM6rNrb3OcBchnlet9Ab5Inydc9A2BAkbSym7hcIomZ6e7p7vn6
+                        Z/Diu0FZ5IOrKBnI5Fpkd2qWJr/pOI7z+5dnYnRwfHQyOhd/+58/ibkfJUomfhJIcX50KqJQzrMUT5QUYSmKCJ+F8lX0tZRep/NB
+                        RXFU4GeaiFBmZVSI2Be5H0QJzw8fH7LH/1VityMMV1EEeZSpYlDIdGxx87I70e/7WRbfiYt+P5dTmcjcV/LymUuDmQy+dDonWyXL
+                        JIVfBiXWyPw6wmbkrZI5hHol8CeY+clUis8+qEBiWYjMn+Lv/PFBRTL3SDOdSZ7OxXg8KVWZy/FYRFBEroSfJKniHRedTvUsn2Z+
+                        Xki9Zqbmsce/82rRm9G74/f8pFqSpUV0m/lqVj3IZfWtKK+yPA1kUdRP7gpNmhbE0VVF9j2t54Eyj/Fcc61G8azI4kj1RJl8LWFE
+                        PfUW0kmVy3reUSznMPCIHvmFOBp1OmenpyMxZPouVBDFUEDXy2WRxtfS7RIfrCgudi47r0/fHbw9wWTn6mXeV35MA94kd4R4IQ7T
+                        HIuyNAlhDjGJghnUKw5PDt4dWe7ROX87OgKFiTNTKit2B4N7TXXhdD5+/Ngaubm58ZrR0+PX44PR0fHbozOSYAB/icGhr3L/swxU
+                        GoF7H8qcQJmwWCJjGHvgdE6OPq5cF/hhzhOI8Pnxhz/QKJYUs51pLn12oTJPw+ha5nQW+jLBfygzy+Fyff/aT1Q/jJIghs9gJEjx
+                        MfFL1Y/ifpDOM6gNHFoUtTQVs38KfaOYs9Hbw2Ot2EEuJ7G8Ja8dZOVVHAXahQf31U4XlVqetaoSeWF09e41FrDXDIRjrQpSOqVl
+                        MfBzFQXYt4MJE+fl9svf9Xe2+9u/6zcCePNQi/D/IFbLxcQ6b0YHh4dH5+egl+NMwyH9JE2wjQa14IUpgYkU7kHmA0UGpz+9wYkh
+                        hKNj0fU6e28n79KwjKWYp+E4lzc5TOMF+50z/fUomdL606R6cEgO/+v7N6PR+/Gb0/PRQvwMv/3kWSfkE47Ir8TFyeFlteiMGPws
+                        Kkdvn6Zf358d/deHo/PR+MPZ24W4OBv+Znund9w7Obrs7A0q+fY7nRfivczn2J9MCgGFEf49PhTCz/LHvxRAmQkp0QPTEIcjUO98
+                        FcwEiImfn3l6fvjVGhmXT9FKHus86l98yDZIvU6if4oQg07nKM/T/HUalORN4rfbvxUD/PEoSnCcAdj+/nR0zgfuA8zVRyhK1K74
+                        t0/JQRynN7ti8Cn5lJxDiLmf7Yp7QsvFoNC/PcD5pwRUOkHsFwUgeyp1pHGboNOl+CsQoScIaFESqfHYLWQ86Yr+vjhJE6nH6V9R
+                        Zlja9ep58CGoQI0RM4Hlk2I4ykvZbeaDjBdUp6rYFThZ6qJQ+SU2dHHZnpekURLKW4z8iLmyPRhHyZdqvSqzWBKVniBShla9CYTv
+                        ECEJiUiulD/lvfQEvu0KXuMrla8mJX7h/V5erti6Dy73X+SdB6WTDnaFe+3HpRRpLhynKyb4xHBP6KdRovksagLRhGQQQ8D4XCrf
+                        Qa6AuOdNpXKdxJ9Lp0d0KvI8L0+vUlU4jRBPdPULBQX93WGemp7GQtUmiQidxX4gXUfogVWikZ61aE5tN5syTs4SVc4i3O4KIRvD
+                        e0jd4PGuITKDq2gqK2Vo64YnryLPLlFRdrEKpr3Q0y+fEsYWXCeaT4mvThX5W1rmgYT5LIZFHjyDH2gyP5p92f2WLgt1B8SZSame
+                        pcz/w/4reer9dzp0GDjnGxOcuJQe7nLWxu7dYIGmDVAuY8V5XQ0SXWvEm0gZMhE4kh+OFZJml6ANODcdOqWa9P+9MmgukRYnZmEt
+                        CZJol1nz0SNBLjVrAN17TrFD2VQIPTFL80JM/SsfAZDCOvLDa0wKEIcfH2ThET5a3Aqkq5CwVpR7y4fylhRO+YKXT+P0Ck5Ap4UR
+                        FnaHuZCxQ993bkvD0JvyGEKKmwh5ruNhMqjRc+1LSRrK8Zwja0FWHI+zOxINyTD9tKMF8FLNMzzvtnhMLHq3UGqM2ddyrFKXxOU8
+                        WhX1im63RwAzjP35VeiLW0Yz91aTrM2tw3vyZdnamFuZOYaNjRmXONradAYOKQeB0MU8LQuj0o6QQGce/57+ep+BP82ci93+DvCT
+                        h4xQV3kUTiU8NIdDGxBWkYolf2+L51+hiihRRw4F5/3fC72MB1+I1ynUihINIRSiX6GWU48PYlf8IVJvyiuhvYhjG+oXFGxh5Kuu
+                        kEro7E24sLsfUPVEGQeyN2vHk62trb3vwjRQd5nkOm2/s0cf8EnycFQt+3szuP7+HgE41Yk4JKpyffOUoHzoXEfyhsonRxgoHjo3
+                        Uahmw1BSwdnnHz0KopEf9wtgpBzuOODHetm/548FF925yZMoH/1FWCX53kBP7tiMTcho2Jro0JuklC5ASvIO8oKhDfCEGkPnvtL+
+                        wqmoUlrUl1/L6HpIyTZO9Mwivv0KZeSwvUyD636cauevo04967t80X21NzDz9gas0s7eVRre7e9l+4dSwfyEFsLXtTgsHG5x1lhI
+                        T+z5K6Q9CAIYG9Xj458JQfTqQJWUlO4N/H1vb5CBleYx0LaFuY2DcoY9jiZjXfqH1uHpidBXvnFaM2ylMUuJAvK66ygti+aErQVK
+                        Olw8Jyq4hAYy8rkiYh0TSIi1+G5Yk22CAK/UdbY3/wIHcU3RzQlYTyBlLdQ4/bKUj/EyvVuWihhg8rJs9Xyz4SrIEOCsRo463pQZ
+                        aCL54rjqflNh2KQuED2WuLDzCIzpem/FGB9bnxo5P1G6xVm0O3Fey/JWVPWfoANIWTWVZo9/nUsCnVwCLe41zwUKxHvNYmFt2ggE
+                        deJEuXr8qUqoZQSV0KbcesWyVggGBbAxSQmMug5nmYbkiumXlRabBpe7pDB9aqwKuGp7VQvGTcXiZXdOpWU9bYUmm36Sl5cJ9nNX
+                        YJYMSuUDabXAenH3EifgJhwSZzoLMqjcSwvN7bkVJscRSsfNjnbFVZrGT/2AwrBb7YqbQMiLnsr7xOp6rpj7ydcSZRfMa4VekTYV
+                        PKABwDWJ8rnMjbkDMjGU+YTvhoOLrADaMKkR5NY0cEp132mDpBNNfnjPSwCDXIvAi0phmlZ45okTQr+CugnRhBpi/rUsp/Hjw9z4
+                        stkPEpLOmjPE6SPps634DTo89sU8muZaZyYs6Z5uXE4JTYCndt8VZ6tE8pI/PlALAUJyUOYGjFHtSiDQQ4YIsp9/2I3rpQ1sWq7M
+                        vEC0mbXBjvWyF+JYCgSZ5PGBOGNfYRopbA65HSKv0OGX2z1IUCn/pLD5taSvKTJRwl1kozW9SXQrQ0ihxanj32TLNDKd+48fPy6c
+                        rZ6wHnHZ7my16oinw2xUZIvM4hto6BxCd8qn3jyTiRKVp+U1nWoElqQQa1TdiPAkLNZ67WkJ6ohYH4Z1DmfhmXbaJ7QrR6gTNIBl
+                        1aBb4rN2rU5+PHVLtZ1unFhLO03OrWakRVORNGKmeTSNEj9+Rvi2vOdEVmdVJBEdBFqhv/sEn2VAdwTApaZtyLcKH86ONVSxK6H0
+                        QW7XeJE+P+RHlVS1J8F9emzTDabKOHcxRJaVsE6BVsPcizXMIYvvkmqtoqlXJfRWnxwFz4Hu74lR0x8Uh5y1Od1nGtDqSz+bv54O
+                        /id2Rw4po0xE05J7tgiO1TkDp7n/BRimH7k2DR3y2sOtQobuV1b2uzZ6YJRMUva+VtXeQgWaUvV/2hBAABwlZdM5Ixmq3M1UU+0C
+                        0ZTrL8TjH6/p8o7cMiyzunClyomR8S85XZL5FQw2l2IsBmFKYaJBg4XEnWGQy3JUSi49aVex5a5wSwqeRjyYG15rxIKYkihcbO39
+                        AHMINm2aDJ0db9uxstYPox9xJH/Y3+q11CG29oghtoDFSTHkWyJzSWRsVnhpPkUlMsOPomqaDra9/3D2txprgQoZiy1ac2DhKuVO
+                        HCGIGaqrNNi/x7fF3oC+7g3oqWPtp1ri8BCkq0aruvtTYkpqns4ppG7hksNRVRWPdUnskgWqKiX3b5pqmh6ZXmadXmFCq58xGNhN
+                        JcO8Lj7YAQl8qmtCF+trlNejHutNmq4IPUikgoD0YJnbC909ofBl5nKJtZY/1o/5kAyr60nXWqcFufILCva2R09l3bGiu0jaQH2V
+                        ijOTU9dg5tbEtVr4e1s3jinGmMX39aSunatWPJZX2puqpdDdkuqBzj2RpEUEz00WVJO0wK9OM6vplPlQwdc1etbiw6VWi8B6bXi1
+                        oXQl8eW0apmGrYRmYVFOkBP8Y5yfUNZOzqWF1Skk/NSEJWU2q2F1XQXRlNdQ14Y8v87rV6Xymm99dHXFIVVdWtQpIXCi6k1RW7C2
+                        3qoUZWOVQVLoDGatFA0pemshS+mVB64cCCetQqGRboU8Tbr1TXGqbGytQE1vraD8Mt6SSSHnnG/Kwu5j6VhxXdYaIpRNY+Qpibzh
+                        7qprpSI9YSUaCB+ulSaYMf2jazltLKd+cNccLVDfkFLY8ZW8SK9u+06NXTou6ynd+iYGM0wMoz2YPN3Q2aDYdgRvK3TiHCRBJBOY
+                        kHJFVirsi4qL2lrUx8CuFo1Rl6tAI/TaJsqS+c6p1POZIzfit0wjRSRPMiu6z6zjva4mKAPQFY/l9vaJtAy1wRLdVQi0JOgJyhjW
+                        ALf5NorqX3FG4vwrCk+ustfXaM8qQtfu8UlJutW0tbgw1W0tHwVdVFQn3WkVOVP57BRzavUIKdup87FVwdWyrZ2Lsjr4QXPvR7Bx
+                        AYKXm938sAWfOZfb5N7E82mbbEGB4X6J00K4dS+F0q+uVaKROvh6jFvfUaKl1DfKLbl0XoXdP0mz9Nr29Q3f9PECWIAPGrKXuvWi
+                        h1Z58zotHNPBIxCnN9G0425SwsU99rS4FPck2WKpn1GYg5yYOpNeuEuxPlEcIR7/So1Q/S4cXaU1R9gvMWKSe88295InVF7eBmoL
+                        mZ80a2/Y6Xgv366qLUSr3sQCMyICW9qvL+mn31ZuC0l5t+sUa6QwxYCNFFZlaANc9bwVLaqH34ip7QJyLRpYrOm1uOIuCWY5PL8g
+                        iLuWwcqCzGyEEtmGsMrv2so6Gun3Al3Do7GBvA1kpmgC3wZzV4leAcTzzcf5v98d1+qLkmt4TcjHGQsX7WJHr6yLaRQ9nPXhEOw2
+                        ZQihdfUOpXeQT/lVGXNBjcSC8ZvKwvE4TIPxWDPw9YWZwbnc88NwPC9V6cfx3RiCxGVBVp/maZm5OV1wIT+xbkv0el7mG5auY15B
+                        pRcNeHjoFMB3+A6W4eFMxtnQOXt8wI6nCTdFi+q1xoJemHU20ua0dzPtnxAPdFOYk4GqRWzoWlu16TbNt28ILk3EMZLbN9j1+7tN
+                        lAfgkucZnVR4C8ZFo3UdZOhZ0y+nX57VSa4Ak58zLfuai8lI3dBsNaCrnrS2iKbecu6K1RJJ6w5n7etIvBH7NqO3LHUbqbI8IlX/
+                        WJna/1wWit6r26U3AfBfF/RV84grLv3d3KXrt5FdHO3P5pYCtaq0YxiCPs70nHRryqMWOJvR3VViPf7x8M3RId8lU3jVHWsyINgp
+                        hFoOACQpodeQ7n8KFULlT19WoDPNOcVKdhZL0Qc5mv0NogYGdjrt9RPn9D9Z3nt6/cBkMAh5GuEAb/MoYalf1TjTgsRXokkMeu3C
+                        A9Fav/14rY8SrORZajYCbXcsAHRPzxn7elZ3vWffmx0CVGT4Xv/i4e4TnKw2ZoxRoeEG/RhRXgIdI3ozj+6MxmN+sWjML7iPx+bN
+                        MN36P78roIqj20i5Gkm7nb8DUEsDBBQAAAAIAJU6V11RLYgeGwIAAF4HAAALAAAAc2l0ZW1hcC54bWytVcGSmzAMvecrMtwVsntq
+                        O0n21i9oP8AYETRjbK9kk3x+ZYfs7OyptMzAgEGynp6e5NPbfXL7GVko+HPzcjg2e/Q29OSv5+b3r5/wrXm77E6ZnWDaq7GXczOm
+                        FH+07e12OwglnEyUQ+BrK3bUhbTLx/Z4+N5cdvt9cb+cXLCX4inq2r0yJOPQJzkM3J7a8vPUFru/sTddyGm9V0JHyGBNzyir3e1o
+                        RHC9W/DJ2PVo8Y42J5oRBA3bcfUGHjNrIWtxE0L32q3egtFy1lrq+h98B4d3lZX8j2vMnSNrUl28HI9w1PsTLIHeeAFnoMcBvSA4
+                        hJkNAZO8ZwSUBOT0L8RSPgYDNigdPcoz5Gb4Okr9ExxDdFnAa/nyMBCbEh+EwAUPRRPkFZ2CGZHLrbgFJs1JIHIYyG0H64MZ8j7M
+                        9SPM5oFvLtIoPPkgMJAikcpVkISbASDfZ0lMhfVPdfrIFCxTIkVR+YqBk+5Y+UpBMWYPPUUXJnXWuYSeVNmbgXNLthr6TuUZMSfA
+                        xFUxRU4dSiAPLhM8TDaMLaoXkZDZ6uuYJ0O+8GL4wUCeuZKm+o7IQ+DJeLtdfN3NXFV7S5OUya/xcikChykUo81ifRlH6PVSkqP2
+                        qfbBbDRfra51mfEJZDC54rJhikqITu3N0CTWsVH5rO2glyatE17ltZRdQM+YIk4pA2YwVHDNweWlVwsoVKHar0dJfehpedn9AVBL
+                        AwQUAAAACACdOlddtPdmptsEAADoDgAAHQAAAHRlc3RzL3Rlc3Rfc2VvX21haW50ZW5hbmNlLnB5rVfdbts2FL7XUxC6kdxYUpKL
+                        YsiiAF2aDQXatGhS7CIrBFo6sjlTJEdSdvJIfY6+2A4lWZYdOUu7CAYskuf/5+OR7/u3YKwhhgpD9PdvBmhNipoopoAzAaQAUlEm
+                        LAgqciC/nX6Ofd/3WKWktsQsast4v6pnSsscjOl3HvpXC5UqGYfNuhbMWtTtlVpWRFG74GxGusNPuPS8m8vP7z7dkrRZhlnm2LNs
+                        Emswkq8gnMSKahDW3J18JQkJTK6ZsiYxILOB0bF6CLyP799mN++//IHSAo4WLk7mGqgFLaDWsmAr0IZZiEDgz2pQmhmI6IoKGxVM
+                        5LzW7jCX+FfS2kaMR7msFOovNOxIDLzrqz97ZS8iP/A8L+fUGHJz9fHD1rUmeeEmlLFbXlIDkzOP4FNASQzYLyo0wMtu0z1uGbuE
+                        oIGbvCCziz3VD2+ZhtxK/RBOdjloUVxyoKJuBTYS4rzd2SPVUtpN4ra0glawJQy3lNvkBZO4WhZMD3U3RRbnUj2chm1NTMkY71ji
+                        9+yq6BLC4PL6zYerYEqC2amOLOWuhuJS/yXGyZko4D5e2Io7nnP3cnG+AFpcnGOPLAnmP/VzKqRgOeU+WWgoU39hrTJnSbJer+Nd
+                        PYl/cZ60/DNZPFyc044lwfLhDHSUU0y6Qbo37cZ5QpGlJU4a/eOW7vG/uOGP7Nv14xkW5vPVU2ZVYClxZZL6Ws6kNT7JpcunTX0h
+                        G8ZpKTmXa/9nfXAW/IThKJbDPZPCJK1FtUmotgzr3ySnx6evo5Pj6Ph1FJAj0oPNEQniqnBevmlJiZG1zuFQpW0KeQ4CNAY722p1
+                        xYxyguAgXu5i8s272yvswCci4Xs6fQayeirVydB9Vc84xtq6ReCxkqgYTxwQTc42zaorxDgIERZU18+dwPRW14gBpdSkJEyQcFf2
+                        o9AiHsy5nIXBKxfIDsMMr+dpGRsEldgozmwYDDMwPZncRWi4I0XMrVKVOI5k2Mi/Niedm6Mmbrjjtca/zMI9qnluDwVHLv5HQXIg
+                        bklw5ExCgm0p9tWHSZ54PYI3leFqZNpkfUpWlNcwQPMCUR8zPURER7hzftjRKWmSl8nlwO+ebeB7oxap8Y7CC2ueBrUto1+GluZV
+                        0Rn6iuq5GZiowdZaDAaEWNcivMPxAEsH8trSGUfZTwF5J/TrlOTrIu2dnfY6xp+cKlQNmaytqm3nsfOn87Y33l2gWcXmTdvlC8iX
+                        GRVFhhewAb2CrEOf/asUj2veh99FIIgiqhRvujWKNGx6eb/j8TYHba/+qSkPWylxGyaML9p4PO1kY5kXoPUo9++UGwh3LtL/h1ST
+                        Sd/Lowpd0Hb1HUQGPOvnICQb9N5/6GhDMoxnk45gshufAa9rU+qGmb2Rot2P7xudOJwVbSWPan0nwmD/fsMUdjJGWa5ly+VulGeR
+                        bqL9NC0SbgL3NOHjQB0ovIOB+4mg7zbMTMsliMwhYcYMXld/4+gIxejA+UJGKzqHPbgbFtcO3RC/mvWgCFzJbycv/NZxNYnjOCIy
+                        ztDm+zc3dA2adrTTuyD9UGefHKy/9wwEcaiHXyWEzgyCdPAIBsYQCxsuWzO7QJTL+hi6TczJjMt8+TglTwDXj7lz+kygeEFg8tzU
+                        kWVuTswykuJXVtZcF1kWtA72X0RuF/v9X1BLAQIUAxQAAAAIACQ6V10RhA9PeQEAAJECAAAJAAAAAAAAAAAAAACkgQAAAAAuaHRh
+                        Y2Nlc3NQSwECFAMUAAAACAAkOlddJu/89V8BAABvAgAAMAAAAAAAAAAAAAAApIGgAQAAYXRlbGllci10cmFqZWN0b2lyZXMtcHJv
+                        ZmVzc2lvbm5lbGxlcy9pbmRleC5odG1sUEsBAhQDFAAAAAgAlTpXXRjswh6PAQAArgMAAIIAAAAAAAAAAAAAAKSBTQMAAHJlZmxl
+                        eGlvbnMvcHVibGljYXRpb25zL2xlc3NoMWdyZWF0ZXJuZXVyb2RpdmVyc2l0ZS1lbi1lbnRyZXByaXNlLWF2YW50LWRpbmNsdXJl
+                        LWVuY29yZS1mYXV0LWlsLWNvbXByZW5kcmVsZXNzaDFncmVhdGVyL2luZGV4Lmh0bWxQSwECFAMUAAAACAAkOlddtqneoEEAAABE
+                        AAAACgAAAAAAAAAAAAAApIF8BQAAcm9ib3RzLnR4dFBLAQIUAxQAAAAIACQ6V12OdAnDGhEAANovAAAaAAAAAAAAAAAAAACkgeUF
+                        AABzY3JpcHRzL3Nlb19tYWludGVuYW5jZS5weVBLAQIUAxQAAAAIAJU6V11RLYgeGwIAAF4HAAALAAAAAAAAAAAAAACkgTcXAABz
+                        aXRlbWFwLnhtbFBLAQIUAxQAAAAIAJ06V12092am2wQAAOgOAAAdAAAAAAAAAAAAAACkgXsZAAB0ZXN0cy90ZXN0X3Nlb19tYWlu
+                        dGVuYW5jZS5weVBLBQYAAAAABwAHAEkCAACRHgAAAAA=
+                        """.split())
+          with zipfile.ZipFile(io.BytesIO(base64.b64decode(encoded)), 'r') as z:
+              members=z.namelist()
+              if sorted(members)!=sorted(allowed):
+                  raise SystemExit("Arrêt de sécurité : archive interne inattendue")
+              for name in members:
+                  dest=repo/name
+                  if name not in expected and dest.exists() and dest.read_bytes()!=z.read(name):
+                      raise SystemExit(f"Arrêt de sécurité : fichier déjà existant {name}")
+              for name in members:
+                  dest=repo/name
+                  dest.parent.mkdir(parents=True,exist_ok=True)
+                  dest.write_bytes(z.read(name))
+          print("Installation complète des fichiers nécessaires. Aucun workflow existant n'a été remplacé.")
+          PY
+      - name: Activer Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Installer les dépendances du CMS existant
+        run: python -m pip install --disable-pip-version-check PyYAML Pillow
+      - name: Exécuter les trois tests SEO de non-régression
+        run: python -m unittest discover -s tests -p 'test_*.py' -v
+      - name: Régénérer les pages, migrer les anciennes URL et mettre à jour le sitemap
+        run: python scripts/seo_maintenance.py --apply --regenerate
+      - name: Vérifier toutes les URL, les liens et les canoniques
+        run: python scripts/seo_maintenance.py --check
+      - name: Vérifier le diff avant écriture
+        run: git diff --check
+      - name: Enregistrer les fichiers validés, sans changer les workflows GitHub
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'B2R TALENTS SEO'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -A
+          if git diff --cached --quiet; then
+            echo 'Aucune modification nécessaire'
+            exit 0
+          fi
+          if git diff --cached --name-only | grep -q '^\.github/workflows/'; then
+            echo 'SÉCURITÉ : le workflow ne doit pas modifier les fichiers GitHub Actions.' >&2
+            exit 1
+          fi
+          git commit -m 'SEO : indexation, routes historiques et sitemap vérifiés'
+          git push origin HEAD:main
+      - name: Demander la publication GitHub Pages explicitement
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh api --method POST "repos/${{ github.repository }}/pages/builds" > /tmp/b2r-pages-build.json
+          echo "Reconstruction GitHub Pages demandée. Réponse :"
+          cat /tmp/b2r-pages-build.json
