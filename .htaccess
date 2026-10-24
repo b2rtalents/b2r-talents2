@@ -1,1 +1,12 @@
+# Canonicalisation du domaine (Apache/OVH uniquement).
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^www\.b2r-talents\.fr$ [NC]
+RewriteRule ^ https://b2r-talents.fr%{REQUEST_URI} [R=301,L,NE]
+</IfModule>
+
+# Permaliens conservés après refonte.
+RedirectMatch 301 ^/atelier-trajectoires-professionnelles/?$ https://b2r-talents.fr/atelier-cadres/
+RedirectMatch 301 ^/reflexions/publications/lessh1greaterneurodiversite-en-entreprise-avant-dinclure-encore-faut-il-comprendrelessh1greater/?$ https://b2r-talents.fr/reflexions/publications/neurodiversite-en-entreprise-avant-dinclure-encore-faut-il-comprendre/
+
 ErrorDocument 404 /404.html

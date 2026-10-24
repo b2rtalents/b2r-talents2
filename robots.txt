@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.b2r-talents.fr/sitemap.xml
+Sitemap: https://b2r-talents.fr/sitemap.xml
