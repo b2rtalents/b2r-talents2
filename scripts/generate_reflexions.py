@@ -18,7 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CONTENT_ROOT = ROOT / "reflexions" / "contenus"
 PUBLICATIONS_ROOT = ROOT / "reflexions" / "publications"
 JSON_OUT = ROOT / "reflexions" / "contenus.json"
-SITE = "https://www.b2r-talents.fr"
+SITE = "https://b2r-talents.fr"
 
 REQUIRED_ARTICLE = ("title", "date", "status", "category", "summary")
 REQUIRED_REGARD = ("title", "date", "status", "category", "source", "url", "summary")
