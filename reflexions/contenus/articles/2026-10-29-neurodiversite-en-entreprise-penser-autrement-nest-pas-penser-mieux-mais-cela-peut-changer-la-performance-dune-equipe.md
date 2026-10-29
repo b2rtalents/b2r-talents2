@@ -2,7 +2,7 @@
 title: "Neurodiversité en entreprise : penser autrement n’est pas penser mieux…
   mais cela peut changer la performance d’une équipe"
 date: 2026-10-29
-status: published
+status: draft
 category: Neurodiversité
 featured: false
 summary: La neurodiversité n’est ni une supériorité ni une faiblesse. Elle
