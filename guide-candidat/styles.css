@@ -14,6 +14,24 @@ html,body{margin:0;padding:0;font-family:Arial,Helvetica,sans-serif;color:var(--
 .guide-section{padding:58px 0}.guide-section.alt{background:var(--pale)}.guide-section h2{font-size:32px;line-height:1.1;color:var(--marine);margin:0 0 26px}
 .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.cards article{padding:24px;border:1px solid var(--line);border-radius:12px;background:#fff}.cards h3{color:var(--marine);margin:0 0 10px;font-size:20px}.cards p{margin:0;line-height:1.55}
 .benefits{display:grid;grid-template-columns:1fr 1fr;gap:13px 30px;padding:0;list-style:none}.benefits li{position:relative;padding:14px 16px 14px 45px;background:#fff;border:1px solid var(--line);border-radius:10px;line-height:1.45}.benefits li:before{content:"✓";position:absolute;left:17px;top:13px;color:var(--teal);font-weight:900}
-.purchase-box{display:grid;grid-template-columns:1.4fr .7fr;gap:45px;align-items:center}.purchase-box p{line-height:1.6}.order-panel{padding:28px;border-radius:14px;background:var(--marine);color:#fff}.order-price{font-size:44px;font-weight:800}.order-panel button{width:100%;border:0;border-radius:9px;padding:14px;background:#8ca4b7;color:#fff;font-size:16px;font-weight:800;cursor:not-allowed}.order-panel .small{font-size:12px;color:#ccdae5}.legal-note p{max-width:900px;line-height:1.6}.legal-note a{color:var(--blue);font-weight:700}
+.purchase-box{display:grid;grid-template-columns:1.4fr .7fr;gap:45px;align-items:start}.purchase-box p{line-height:1.6}
+.order-panel{padding:28px;border-radius:14px;background:var(--marine);color:#fff}
+.order-price{font-size:44px;font-weight:800;margin-bottom:18px}
+.order-panel form{display:grid;gap:10px}
+.order-panel label{font-size:13px;font-weight:700}
+.order-panel input[type="text"],
+.order-panel input[type="email"]{width:100%;border:1px solid rgba(255,255,255,.28);border-radius:8px;padding:12px 13px;font-size:15px;background:#fff;color:#17334d;outline:none}
+.order-panel input[type="text"]:focus,
+.order-panel input[type="email"]:focus{border-color:#79d9df;box-shadow:0 0 0 3px rgba(121,217,223,.18)}
+.consentement{display:flex;align-items:flex-start;gap:10px;margin-top:8px;font-weight:400!important;line-height:1.42}
+.consentement input{margin-top:3px;flex:0 0 auto}
+.consentement span{font-size:12px;color:#e7f0f7}
+.consentement a{color:#fff;text-decoration:underline}
+.order-panel button{width:100%;border:0;border-radius:9px;padding:14px;background:#fff;color:var(--marine);font-size:15px;font-weight:800;cursor:pointer;margin-top:8px}
+.order-panel button:hover{background:#edf4f9}
+.order-panel button:disabled{background:#8ca4b7;color:#fff;cursor:wait}
+.order-panel .small{font-size:12px;color:#ccdae5}
+#paiement-paypal{padding-top:4px}
+.legal-note p{max-width:900px;line-height:1.6}.legal-note a{color:var(--blue);font-weight:700}
 .guide-footer{padding:28px 0;background:#052b50;color:#fff;font-size:12px}.guide-footer .guide-wrap{display:flex;align-items:center;justify-content:space-between;gap:20px}.guide-footer img{width:145px}.guide-footer a{color:#fff}
 @media(max-width:850px){.guide-hero{padding:34px 0}.hero-grid{grid-template-columns:1fr;gap:28px}.cover-card{width:min(320px,85vw);margin:0 auto}.hero-copy h1{font-size:40px}.hero-copy h1 span{font-size:23px}.promise{font-size:20px}.cards,.benefits,.purchase-box{grid-template-columns:1fr}.guide-section{padding:38px 0}.guide-footer .guide-wrap{flex-direction:column;align-items:flex-start}}

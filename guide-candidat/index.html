@@ -78,11 +78,51 @@
       <h2>Votre exemplaire personnel</h2>
       <p>Le guide sera fourni au format PDF après validation du paiement. Chaque exemplaire est destiné à l'usage personnel de son acquéreur et peut être identifié par un numéro de commande.</p>
     </div>
+
     <div class="order-panel">
       <div class="order-price">8,90 €</div>
-      <p>Paiement principal : PayPal<br/>Virement bancaire : exceptionnel, sur demande.</p>
-      <button type="button" disabled>Commander prochainement</button>
-      <p class="small">Le bouton PayPal sera activé au lancement.</p>
+
+      <form id="commande-b2r">
+        <input type="hidden" name="produit" value="Manuel du survivant : le guide du candidat"/>
+        <input type="hidden" name="prix" value="8,90 EUR"/>
+
+        <label for="prenom">Prénom *</label>
+        <input type="text" id="prenom" name="prenom" required/>
+
+        <label for="nom">Nom *</label>
+        <input type="text" id="nom" name="nom" required/>
+
+        <label for="email">Adresse e-mail *</label>
+        <input type="email" id="email" name="email" required/>
+
+        <label class="consentement">
+          <input type="checkbox" name="acceptation_cgv" value="Oui" required/>
+          <span>J’accepte les <a href="../cgv-contenus-numeriques/index.html" target="_blank" rel="noopener">conditions de vente des contenus numériques</a>.</span>
+        </label>
+
+        <label class="consentement">
+          <input type="checkbox" name="fourniture_immediate" value="Oui" required/>
+          <span>Je demande la fourniture immédiate du contenu numérique et reconnais perdre mon droit de rétractation dès le commencement de la fourniture.</span>
+        </label>
+
+        <button type="submit" id="valider-commande">Valider mes informations et accéder au paiement</button>
+        <p id="message-formulaire" class="small" style="display:none;"></p>
+      </form>
+
+      <div id="paiement-paypal" style="display:none; margin-top:25px;">
+        <p><strong>Vos informations sont enregistrées.</strong><br/>Vous pouvez maintenant procéder au paiement sécurisé de 8,90 €.</p>
+
+        <script
+          src="https://www.paypal.com/sdk/js?client-id=BAAJqI7mm3kA8ixsWmX43TuJUuqx_oCSd0tuGzBVSdJVN7e5DygUJ_u5OjwueAwuR2SJWcWNDm68Q9A-q8&components=hosted-buttons&disable-funding=venmo&currency=EUR">
+        </script>
+
+        <div id="paypal-container-N8GSYET4RENX6"></div>
+        <script>
+          paypal.HostedButtons({
+            hostedButtonId: "N8GSYET4RENX6",
+          }).render("#paypal-container-N8GSYET4RENX6")
+        </script>
+      </div>
     </div>
   </div>
 </section>
@@ -103,6 +143,43 @@
     <span>© 2026 B2R TALENTS</span>
   </div>
 </footer>
+
+<script>
+document.getElementById("commande-b2r").addEventListener("submit", async function(event) {
+  event.preventDefault();
+
+  const formulaire = event.target;
+  const bouton = document.getElementById("valider-commande");
+  const message = document.getElementById("message-formulaire");
+
+  bouton.disabled = true;
+  bouton.textContent = "Enregistrement...";
+
+  try {
+    const reponse = await fetch("https://formspree.io/f/xqpqdznk", {
+      method: "POST",
+      body: new FormData(formulaire),
+      headers: { "Accept": "application/json" }
+    });
+
+    if (reponse.ok) {
+      formulaire.style.display = "none";
+      document.getElementById("paiement-paypal").style.display = "block";
+    } else {
+      message.style.display = "block";
+      message.textContent = "Une erreur est survenue. Merci de vérifier vos informations et de réessayer.";
+      bouton.disabled = false;
+      bouton.textContent = "Valider mes informations et accéder au paiement";
+    }
+  } catch (erreur) {
+    message.style.display = "block";
+    message.textContent = "Impossible d’enregistrer la commande pour le moment. Merci de réessayer.";
+    bouton.disabled = false;
+    bouton.textContent = "Valider mes informations et accéder au paiement";
+  }
+});
+</script>
+
 <script src="../responsive.js"></script>
 </body>
 </html>
