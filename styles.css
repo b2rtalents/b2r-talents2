@@ -159,10 +159,74 @@ body{overflow-x:auto}
   color:rgba(255,255,255,.55);
 }
 
+/* Bloc ebook desktop */
+.ebook-desktop-band{
+  width:1448px;
+  background:#f3f7fb;
+  border-top:1px solid #dce6ef;
+  border-bottom:1px solid #dce6ef;
+  padding:26px 52px;
+}
+
+.ebook-desktop-inner{
+  display:grid;
+  grid-template-columns:92px 1fr 190px;
+  gap:28px;
+  align-items:center;
+}
+
+.ebook-desktop-inner img{
+  width:92px;
+  height:130px;
+  object-fit:cover;
+  border-radius:5px;
+  box-shadow:0 5px 14px rgba(7,49,91,.16);
+}
+
+.ebook-kicker{
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.8px;
+  color:#1858AA;
+  margin:0 0 6px;
+}
+
+.ebook-desktop-inner h2{
+  font-size:27px;
+  line-height:1.08;
+  color:#07315B;
+  margin:0 0 6px;
+}
+
+.ebook-desktop-inner h2 span{font-weight:500}
+
+.ebook-desktop-inner p{
+  margin:0;
+  color:#41698f;
+  font-size:15px;
+}
+
+.ebook-desktop-inner>a{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:44px;
+  padding:10px 16px;
+  border-radius:8px;
+  background:#1858AA;
+  color:#fff;
+  text-decoration:none;
+  font-weight:700;
+}
+
 /* Desktop intermédiaire : on conserve la matrice 1448 px sans la déformer */
 @media(max-width:1447px){
   .site-shell{
     margin-left:0;
     margin-right:0;
   }
+}
+
+@media(max-width:1024px){
+  .ebook-desktop-band{display:none}
 }
